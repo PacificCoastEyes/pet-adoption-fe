@@ -1,0 +1,38 @@
+#hero-text {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    font-size: 18px;
+}
+
+#hero-img {
+    min-height: calc(100vh - 75px);
+    background-size: cover;
+    background-position: 40% 40%;
+}
+
+.hero-img-1 {
+    background-image: url("../images/hero-photo-1.jpg");
+}
+.hero-img-2 {
+    background-image: url("../images/hero-photo-2.jpg");
+}
+.hero-img-3 {
+    background-image: url("../images/hero-photo-3.jpg");
+}
+.hero-img-4 {
+    background-image: url("../images/hero-photo-4.jpg");
+}
+.hero-img-5 {
+    background-image: url("../images/hero-photo-5.jpg");
+}
+.hero-img-6 {
+    background-image: url("../images/hero-photo-6.jpg");
+}
+
+@media screen and (max-width: 500px) {
+    #hero-text-header {
+        text-align: center;
+    }
+}

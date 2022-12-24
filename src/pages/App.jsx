@@ -1,5 +1,3 @@
-import "../styles/App.css";
-import "../styles/bsWithOverrides.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Menu from "../components/Menu";
 import Home from "./Home";

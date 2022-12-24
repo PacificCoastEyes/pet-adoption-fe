@@ -1,4 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: "Fredoka", Arial, Helvetica, sans-serif;
+}
+
 body {
   height: 100vh;
   margin: 0;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+}
+
+::selection {
+  background-color: #8a2c8c;
+  color: white;
 }

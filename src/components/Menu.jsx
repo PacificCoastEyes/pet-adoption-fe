@@ -1,14 +1,15 @@
 import { Nav, Navbar, Offcanvas } from "react-bootstrap";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo from "./Logo";
+import "../styles/Menu.css";
 
 const Menu = () => {
     return (
-        <Navbar id="menu" className="px-4" bg="primary" expand="md">
+        <Navbar id="menu" className="px-4" bg="primary" expand="md" sticky="top">
             <Navbar.Brand>
-                {/* <Link to={<Home />}> */}
+                <Link to="/">
                     <Logo />
-                {/* </Link> */}
+                </Link>
             </Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Offcanvas placement="end" className="offcanvas">

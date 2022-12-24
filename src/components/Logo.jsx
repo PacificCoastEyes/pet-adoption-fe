@@ -1,5 +1,6 @@
 import Paw from "../icons/paw.svg";
 import HomeWithHeart from "../icons/home-with-heart.svg";
+import "../styles/Logo.css";
 
 const Logo = () => {
     return (
