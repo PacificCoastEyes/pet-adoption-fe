@@ -10,11 +10,6 @@ body {
   margin: 0;
 }
 
-a,
-a:hover {
-  text-decoration: none;
-}
-
 ::selection {
   background-color: #8a2c8c;
   color: white;

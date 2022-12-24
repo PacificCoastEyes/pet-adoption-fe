@@ -3,7 +3,12 @@ $secondary: #8a2c8c;
 
 $offcanvas-bg-color: $secondary;
 $offcanvas-color: white;
+$modal-content-bg: $secondary;
+$modal-content-color: white;
 $btn-close-color: white;
-$btn-close-hover-opacity: 1;
+$btn-close-opacity: 1;
+$btn-close-hover-opacity: 0.6;
+
+$link-color: white;
 
 @import "~bootstrap/scss/bootstrap.scss";
