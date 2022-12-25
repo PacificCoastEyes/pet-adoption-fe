@@ -1,0 +1,45 @@
+#logo {
+    display: flex;
+    align-items: center;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.logo-icon {
+    height: 48px;
+    width: 48px;
+}
+
+#logo-text {
+    margin-left: 15px;
+}
+
+a #logo {
+    color: black;
+}
+
+@media screen and (max-width: 500px) {
+    #logo {
+        font-size: 28px;
+    }
+
+    .logo-icon {
+        height: 36px;
+        width: 36px;
+    }
+
+    #logo-text {
+        margin-left: 5px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    #logo {
+        font-size: 24px;
+    }
+
+    .logo-icon {
+        height: 28px;
+        width: 28px;
+    }
+}

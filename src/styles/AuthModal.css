@@ -1,0 +1,19 @@
+#phone {
+    height: 36px;
+    width: 100%;
+    font-family: "Fredoka", Arial, Helvetica, sans-serif;
+}
+
+.country-list {
+    color: black;
+}
+
+#alert-auth-error {
+    max-width: 75%;
+}
+
+@media screen and (max-width: 450px) {
+    #alert-auth-error {
+        max-width: 65%;
+    }
+}
