@@ -1,6 +1,10 @@
+import { useContext } from "react";
+import { AuthModalContext } from "../contexts/AuthModalContext";
 import { Form } from "react-bootstrap";
 
-const LoginForm = ({ loginFormData, setLoginFormData }) => {
+const LoginForm = () => {
+    const { loginFormData, setLoginFormData } = useContext(AuthModalContext);
+
     const { email, password } = loginFormData;
 
     const handleChange = e => {

@@ -21,6 +21,10 @@
     color: white;
 }
 
+svg #paw-nav {
+    fill: currentColor;
+}
+
 @media screen and (max-width: 768px) {
     .offcanvas .btn-primary {
         background-color: initial;

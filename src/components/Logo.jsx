@@ -1,4 +1,4 @@
-import Paw from "../icons/paw.svg";
+import Paw from "../icons/paw-logo.svg";
 import HomeWithHeart from "../icons/home-with-heart.svg";
 import "../styles/Logo.css";
 

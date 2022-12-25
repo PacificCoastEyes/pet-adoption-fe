@@ -7,3 +7,13 @@
 .country-list {
     color: black;
 }
+
+#alert-auth-error {
+    max-width: 75%;
+}
+
+@media screen and (max-width: 450px) {
+    #alert-auth-error {
+        max-width: 65%;
+    }
+}

@@ -7,6 +7,8 @@ const UserContextProvider = ({ children }) => {
     const [isAuthenticating, setIsAuthenticating] = useState(false);
     const [isSigningUp, setIsSigningUp] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const [currentUser, setCurrentUser] = useState({});
 
     return (
         <UserContext.Provider
@@ -17,6 +19,10 @@ const UserContextProvider = ({ children }) => {
                 setIsSigningUp,
                 isLoggedIn,
                 setIsLoggedIn,
+                isLoggingOut,
+                setIsLoggingOut,
+                currentUser,
+                setCurrentUser,
             }}
         >
             {children}
