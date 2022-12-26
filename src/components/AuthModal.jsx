@@ -11,7 +11,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
     const { isAuthenticating, isSigningUp, setIsLoggedIn, setCurrentUser } =
         useContext(UserContext);
     const {
-        initialStatesList,
+        initialStateSchemas,
         stateSettersList,
         loginFormData,
         signupFormData,
@@ -30,7 +30,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
     const resetAuthModal = () => {
         for (let i = 0; i < stateSettersList.length; i++) {
             const setter = stateSettersList[i];
-            const initialState = Object.values(initialStatesList)[i];
+            const initialState = Object.values(initialStateSchemas)[i];
             setter(initialState);
         }
     };
@@ -39,9 +39,24 @@ const AuthModal = ({ handleAuthModalClose }) => {
         try {
             if (signupFormData.password !== signupFormData.confirmPassword)
                 throw new Error("Passwords do not match");
+            const {
+                firstName,
+                lastName,
+                email,
+                phone,
+                password,
+                isAdmin,
+            } = signupFormData;
             localStorage.setItem(
                 signupFormData.email,
-                JSON.stringify(signupFormData)
+                JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    password,
+                    isAdmin,
+                })
             );
             setIsHiddenAlert({
                 signupSuccess: false,

@@ -1,0 +1,46 @@
+#profile-form {
+    width: 40%;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: var(--bs-secondary);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 2px #bbb;
+}
+
+#profile-form-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid white;
+}
+
+#profile-form-body {
+    padding: 10px 0;
+}
+
+#profile-form-footer {
+    padding-top: 10px;
+    border-top: 1px solid white;
+}
+
+#bio {
+    resize: none;
+}
+
+input:disabled {
+    cursor: not-allowed;
+}
+
+@media screen and (max-width: 768px) {
+    #profile-form {
+        width: 95%;
+    }    
+}
+#alert-profile-save {
+    max-width: 75%;
+}
+
+@media screen and (max-width: 450px) {
+    #alert-profile-save {
+        max-width: 65%;
+    }
+}

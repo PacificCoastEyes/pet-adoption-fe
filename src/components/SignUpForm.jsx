@@ -67,7 +67,7 @@ const SignUpForm = () => {
                 required
                 value={confirmPassword}
                 onChange={handleChange}
-                placeholder="Confirm Password"
+                placeholder="Re-type Password"
                 className="mt-3"
             />
         </>

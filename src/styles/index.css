@@ -10,6 +10,11 @@ body {
   margin: 0;
 }
 
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 123, 0, 0.6) !important;
+}
+
 ::selection {
   background-color: #8a2c8c;
   color: white;

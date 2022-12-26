@@ -4,7 +4,7 @@ import { useState } from "react";
 export const AuthModalContext = createContext();
 
 const AuthModalContextProvider = ({ children }) => {
-    const initialStatesList = {
+    const initialStateSchemas = {
         loginFormData: {
             email: "",
             password: "",
@@ -30,20 +30,20 @@ const AuthModalContextProvider = ({ children }) => {
         msgAlertAuthError: "",
     };
 
-    const [loginFormData, setLoginFormData] = useState(initialStatesList.loginFormData);
+    const [loginFormData, setLoginFormData] = useState(initialStateSchemas.loginFormData);
 
-    const [signupFormData, setSignupFormData] = useState(initialStatesList.signupFormData);
+    const [signupFormData, setSignupFormData] = useState(initialStateSchemas.signupFormData);
 
-    const [isHiddenAlert, setIsHiddenAlert] = useState(initialStatesList.isHiddenAlert);
+    const [isHiddenAlert, setIsHiddenAlert] = useState(initialStateSchemas.isHiddenAlert);
     
-    const [msgAlertAuthError, setMsgAlertAuthError] = useState(initialStatesList.msgAlertAuthError);
+    const [msgAlertAuthError, setMsgAlertAuthError] = useState(initialStateSchemas.msgAlertAuthError);
 
     const stateSettersList = [setLoginFormData, setSignupFormData, setIsHiddenAlert, setMsgAlertAuthError]
 
     return (
         <AuthModalContext.Provider
             value={{
-                initialStatesList,
+                initialStateSchemas,
                 stateSettersList,
                 loginFormData,
                 setLoginFormData,
