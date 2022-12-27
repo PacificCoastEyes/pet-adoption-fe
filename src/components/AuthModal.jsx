@@ -118,6 +118,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
         <Modal
             show={isAuthenticating}
             onHide={handleAuthModalClose}
+            restoreFocus={false}
             id="auth-modal"
         >
             <Modal.Header

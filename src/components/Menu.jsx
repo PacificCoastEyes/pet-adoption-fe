@@ -44,7 +44,7 @@ const Menu = () => {
                 id="menu"
                 className="px-4"
                 bg="primary"
-                expand="md"
+                expand={currentUser.isAdmin ? "xxl" : "lg"}
                 sticky="top"
             >
                 <Navbar.Brand>
