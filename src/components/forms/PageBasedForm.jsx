@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import "../styles/PageBasedForm.css";
+import "../../styles/PageBasedForm.css";
 import PageBasedFormBody from "./PageBasedFormBody";
 import PageBasedFormFooter from "./PageBasedFormFooter";
 import PageBasedFormHeader from "./PageBasedFormHeader";

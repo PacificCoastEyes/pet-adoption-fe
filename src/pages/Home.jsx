@@ -11,7 +11,8 @@ const Home = ({ title, isAuthenticating, isSigningUp, isLoggingOut }) => {
         if (isLoggingOut) setIsLoggingOut(true);
         if (isAuthenticating) setIsAuthenticating(true);
         setIsSigningUp(isSigningUp ? true : false);
-    }, [title, isAuthenticating, setIsAuthenticating, isSigningUp, setIsSigningUp, isLoggingOut, setIsLoggingOut]);    
+        // eslint-disable-next-line
+    }, []);    
 
     return (
         <div id="home">

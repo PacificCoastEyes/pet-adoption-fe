@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthModalContext } from "../contexts/AuthModalContext";
+import { AuthModalContext } from "../../contexts/AuthModalContext";
 import { Form } from "react-bootstrap";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";

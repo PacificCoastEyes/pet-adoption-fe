@@ -15,6 +15,16 @@ textarea:focus {
   box-shadow: 0 0 0 0.25rem rgba(255, 123, 0, 0.6) !important;
 }
 
+#phone {
+  height: 36px;
+  width: 100%;
+  font-family: "Fredoka", Arial, Helvetica, sans-serif;
+}
+
+.country-list {
+  color: black;
+}
+
 ::selection {
   background-color: #8a2c8c;
   color: white;

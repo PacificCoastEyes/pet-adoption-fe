@@ -18,15 +18,16 @@ const Hero = () => {
             }
         };
         const slideInterval = setInterval(advanceSlide, 10000);
-    }, [slideNum]);
+        // eslint-disable-next-line
+    }, []);
 
     const currentHour = new Date().getHours();
     let timeOfDay = "";
     if (currentHour >= 0 && currentHour < 12) {
         timeOfDay = "morning";
-    } else if (currentHour >= 12 && currentHour < 6) {
+    } else if (currentHour >= 12 && currentHour < 18) {
         timeOfDay = "afternoon";
-    } else if (currentHour >= 6 && currentHour < 9) {
+    } else if (currentHour >= 18 && currentHour < 21) {
         timeOfDay = "evening";
     } else {
         timeOfDay = "night";

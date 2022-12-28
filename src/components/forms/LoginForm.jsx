@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthModalContext } from "../contexts/AuthModalContext";
+import { AuthModalContext } from "../../contexts/AuthModalContext";
 import { Form } from "react-bootstrap";
 
 const LoginForm = () => {

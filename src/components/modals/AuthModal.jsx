@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
-import { AuthModalContext } from "../contexts/AuthModalContext";
+import { UserContext } from "../../contexts/UserContext";
+import { AuthModalContext } from "../../contexts/AuthModalContext";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import LoginForm from "./LoginForm";
-import SignUpForm from "./SignUpForm";
-import "../styles/AuthModal.css";
+import LoginForm from "../forms/LoginForm";
+import SignUpForm from "../forms/SignUpForm";
+import "../../styles/AuthModal.css";
 
 const AuthModal = ({ handleAuthModalClose }) => {
     const { isAuthenticating, isSigningUp, setIsLoggedIn, setCurrentUser } =

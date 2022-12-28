@@ -1,17 +1,32 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { Form } from "react-bootstrap";
-import PageBasedForm from "../components/PageBasedForm";
-import PhoneInput from "react-phone-input-2";
+import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
+import PageBasedForm from "../components/forms/PageBasedForm";
+import ProfileFormBodyTemplate from "../components/forms/ProfileFormBodyTemplate";
 import "../styles/Profile.css";
 import "react-phone-input-2/lib/bootstrap.css";
 
 const Profile = ({ title }) => {
-    useEffect(() => {
-        document.title = title;
-    }, [title]);
-
+    
     const { currentUser, setCurrentUser } = useContext(UserContext);
+    const {
+        isHiddenAlert,
+        setIsHiddenAlert,
+        alertVariant,
+        setAlertVariant,
+        alertMsg,
+        setAlertMsg,
+        resetAlertPageBasedForm,
+    } = useContext(PageBasedFormContext);
+
+    useEffect(() => {
+        /* eslint-enable */
+        document.title = title;
+        resetAlertPageBasedForm("profileForm");
+        /* eslint-disable */
+    }, []);
+
+
     const [draftProfileData, setDraftProfileData] = useState({
         ...currentUser,
         newPassword: "",
@@ -31,44 +46,46 @@ const Profile = ({ title }) => {
         bio,
     } = draftProfileData;
 
-    const [isHiddenAlert, setIsHiddenAlert] = useState(true);
-    const [alertVariant, setAlertVariant] = useState("");
-    const [alertMsg, setAlertMsg] = useState("");
-
-    const resetAlert = () => {
-        setIsHiddenAlert(true);
-        setAlertVariant("");
-        setAlertMsg("");
-    };
-
     const alertNewPasswordMismatch = () => {
-        setAlertMsg("New passwords do not match");
+        setAlertMsg({ ...alertMsg, profileForm: "New passwords do not match" });
     };
 
     const alertConfirmPasswordRequired = () => {
-        setAlertMsg("Please re-enter your new password");
+        setAlertMsg({
+            ...alertMsg,
+            profileForm: "Please re-enter your new password",
+        });
     };
 
     const alertCurrentPasswordRequired = () => {
-        setAlertMsg("Please enter your current password");
+        setAlertMsg({
+            ...alertMsg,
+            profileForm: "Please enter your current password",
+        });
     };
 
     const alertCurrentPasswordIncorrect = () => {
-        setAlertMsg("The current password you entered is incorrect");
+        setAlertMsg({
+            ...alertMsg,
+            profileForm: "The current password you entered is incorrect",
+        });
     };
 
     const alertErrorGeneric = () => {
-        setAlertMsg("Sorry, there was an error saving your profile");
+        setAlertMsg({
+            ...alertMsg,
+            profileForm: "Sorry, there was an error saving your profile",
+        });
     };
 
     const alertSuccess = () => {
-        setIsHiddenAlert(false);
-        setAlertVariant("success");
-        setAlertMsg("Profile saved!");
+        setIsHiddenAlert({ ...isHiddenAlert, profileForm: false });
+        setAlertVariant({ ...alertVariant, profileForm: "success" });
+        setAlertMsg({ ...alertMsg, profileForm: "Profile saved!" });
     };
 
     const handleChange = e => {
-        resetAlert();
+        resetAlertPageBasedForm(["profileForm"]);
         setDraftProfileData({
             ...draftProfileData,
             [e.target.id]: e.target.value,
@@ -102,8 +119,8 @@ const Profile = ({ title }) => {
             setCurrentUser(relevantUserDataToSave);
             alertSuccess();
         } catch (err) {
-            setIsHiddenAlert(false);
-            setAlertVariant("danger");
+            setIsHiddenAlert({ ...isHiddenAlert, profileForm: false });
+            setAlertVariant({ ...alertVariant, profileForm: "danger" });
             switch (err.message) {
                 case "newPasswordMismatch":
                     alertNewPasswordMismatch();
@@ -129,103 +146,21 @@ const Profile = ({ title }) => {
             onSubmit={handleSubmit}
             headerTitle="My Profile"
             btnSubmitText="Save"
-            isHiddenAlert={isHiddenAlert}
-            alertVariant={alertVariant}
-            alertMsg={alertMsg}
+            isHiddenAlert={isHiddenAlert.profileForm}
+            alertVariant={alertVariant.profileForm}
+            alertMsg={alertMsg.profileForm}
         >
-            <Form.Group className="mb-2">
-                <label htmlFor="firstName" className="mt-2 mb-1">
-                    First Name
-                </label>
-                <Form.Control
-                    type="text"
-                    id="firstName"
-                    placeholder="First Name"
-                    value={firstName}
-                    onChange={handleChange}
-                    required
-                />
-                <label htmlFor="lastName" className="mt-2 mb-1">
-                    Last Name
-                </label>
-                <Form.Control
-                    type="text"
-                    id="lastName"
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={handleChange}
-                    required
-                />
-                <label htmlFor="email" className="mt-2 mb-1">
-                    Email
-                </label>
-                <Form.Control
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={handleChange}
-                    required
-                />
-                <label htmlFor="phone" className="mt-2 mb-1">
-                    Phone
-                </label>
-                <PhoneInput
-                    country={"il"}
-                    value={phone}
-                    placeholder="Phone"
-                    inputProps={{
-                        id: "phone",
-                        required: true,
-                        onChange: handleChange,
-                    }}
-                />
-                <label htmlFor="bio" className="mt-2 mb-1">
-                    Bio
-                </label>
-                <Form.Control
-                    as="textarea"
-                    id="bio"
-                    value={bio}
-                    onChange={handleChange}
-                    rows={4}
-                />
-            </Form.Group>
-            <Form.Group className="my-2">
-                <h4 className="mt-4 mb-0">Change Password</h4>
-                <label htmlFor="password" className="mt-2 mb-1">
-                    Enter New Password
-                </label>
-                <Form.Control
-                    type="password"
-                    id="newPassword"
-                    placeholder="New Password"
-                    value={newPassword}
-                    onChange={handleChange}
-                />
-                <label htmlFor="confirmPassword" className="mt-2 mb-1">
-                    Confirm New Password
-                </label>
-                <Form.Control
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Re-type New Password"
-                    value={confirmPassword}
-                    onChange={handleChange}
-                    disabled={newPassword ? false : true}
-                />
-                <label htmlFor="currentPassword" className="mt-2 mb-1">
-                    Enter Current Password
-                </label>
-                <Form.Control
-                    type="password"
-                    id="currentPassword"
-                    placeholder="Current Password"
-                    value={currentPassword}
-                    onChange={handleChange}
-                    disabled={newPassword && confirmPassword ? false : true}
-                />
-            </Form.Group>
+            <ProfileFormBodyTemplate
+                handleChange={handleChange}
+                firstName={firstName}
+                lastName={lastName}
+                email={email}
+                phone={phone}
+                newPassword={newPassword}
+                confirmPassword={confirmPassword}
+                currentPassword={currentPassword}
+                bio={bio}
+            />
         </PageBasedForm>
     );
 };

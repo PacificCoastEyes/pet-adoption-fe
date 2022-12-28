@@ -1,32 +1,43 @@
 import { createContext } from "react";
 import { useState } from "react";
 
-export const PageBasedFormContext = createContext(); 
+export const PageBasedFormContext = createContext();
 
-const PageBasedFormContextProvider = ({children}) => {
-    const [isHiddenAlert, setIsHiddenAlert] = useState(true);
-    const [alertVariant, setAlertVariant] = useState("");
-    const [alertMsg, setAlertMsg] = useState("");
+const PageBasedFormContextProvider = ({ children }) => {
+    const [isHiddenAlert, setIsHiddenAlert] = useState({
+        profileForm: true,
+        addPetForm: true,
+    });
+    const [alertVariant, setAlertVariant] = useState({
+        profileForm: "",
+        addPetForm: "",
+    });
+    const [alertMsg, setAlertMsg] = useState({
+        profileForm: "",
+        addPetForm: "",
+    });
 
-    const resetAlert = () => {
-        setIsHiddenAlert(true);
-        setAlertVariant("");
-        setAlertMsg("");
+    const resetAlertPageBasedForm = form => {
+        setIsHiddenAlert({ ...isHiddenAlert, [form]: true });
+        setAlertVariant({ ...alertVariant, [form]: "" });
+        setAlertMsg({ ...alertMsg, [form]: "" });
     };
 
     return (
-        <PageBasedFormContext.Provider values={{
-            isHiddenAlert,
-            setIsHiddenAlert,
-            alertVariant,
-            setAlertVariant,
-            alertMsg,
-            setAlertMsg,
-            resetAlert
-        }}>
+        <PageBasedFormContext.Provider
+            value={{
+                isHiddenAlert,
+                setIsHiddenAlert,
+                alertVariant,
+                setAlertVariant,
+                alertMsg,
+                setAlertMsg,
+                resetAlertPageBasedForm,
+            }}
+        >
             {children}
         </PageBasedFormContext.Provider>
-    )
-}
+    );
+};
 
 export default PageBasedFormContextProvider;
