@@ -4,7 +4,9 @@ import { Navigate } from "react-router-dom";
 
 const PrivateRoute = ({children, testingFor}) => {
 
-    const {isLoggedIn, isAdmin} = useContext(UserContext);
+    const {isLoggedIn, currentUser} = useContext(UserContext);
+
+    console.log(testingFor);
 
     switch(testingFor) {
         case "isNotLoggedIn":
@@ -12,7 +14,7 @@ const PrivateRoute = ({children, testingFor}) => {
         case "isAlreadyLoggedIn":
             return isLoggedIn ? <Navigate to="/" /> : children;
         case "isAdmin":
-            return isAdmin ? children : <Navigate to="/" />;
+            return currentUser.isAdmin ? children : <Navigate to="/" />;
         default:
             return <Navigate to="/" />;
     }

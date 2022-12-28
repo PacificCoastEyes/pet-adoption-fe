@@ -1,9 +1,19 @@
-import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import { Modal } from "react-bootstrap";
 
 const LogoutModal = ({ handleLogoutModalClose }) => {
-    const { isLoggingOut } = useContext(UserContext);
+    const { setIsLoggedIn, isLoggingOut, setCurrentUser } =
+        useContext(UserContext);
+
+    useEffect(() => {
+        if (isLoggingOut) {
+            /* eslint-enable */
+            setIsLoggedIn(false);
+            setCurrentUser({});
+            /* eslint-disable */
+        }
+    }, [isLoggingOut]);
 
     return (
         <Modal
