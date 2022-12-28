@@ -5,6 +5,7 @@ import AuthModalContextProvider from "../contexts/AuthModalContext";
 import PageBasedFormContextProvider from "../contexts/PageBasedFormContext";
 import Home from "./Home";
 import Profile from "./Profile";
+import AddPet from "./AddPet";
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
@@ -35,13 +36,13 @@ function App() {
                                 <Route
                                     path="/signup"
                                     element={
-                                        <PrivateRoute testingFor="isAlreadyLoggedIn">
+                                        // <PrivateRoute testingFor="isAlreadyLoggedIn">
                                             <Home
                                                 title="Sign Up | The Pet Haven"
                                                 isAuthenticating
-                                                isSigningUp
+                                                isSigningUp={true}
                                             />
-                                        </PrivateRoute>
+                                        // </PrivateRoute>
                                     }
                                 />
                                 <Route
@@ -60,6 +61,14 @@ function App() {
                                     element={
                                         <PrivateRoute testingFor="isNotLoggedIn">
                                             <Profile title="My Profile | The Pet Haven" />
+                                        </PrivateRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/addpet"
+                                    element={
+                                        <PrivateRoute testingFor="isAdmin">
+                                            <AddPet title="Add Pet | The Pet Haven" />
                                         </PrivateRoute>
                                     }
                                 />

@@ -71,10 +71,10 @@ const Profile = ({ title }) => {
         });
     };
 
-    const alertErrorGeneric = () => {
+    const alertErrorGeneric = (err) => {
         setAlertMsg({
             ...alertMsg,
-            profileForm: "Sorry, there was an error saving your profile",
+            profileForm: `Sorry, there was an error saving your profile - ${err}`,
         });
     };
 
@@ -135,7 +135,7 @@ const Profile = ({ title }) => {
                     alertCurrentPasswordIncorrect();
                     break;
                 default:
-                    alertErrorGeneric();
+                    alertErrorGeneric(err);
             }
             console.log(err);
         }

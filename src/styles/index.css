@@ -11,8 +11,17 @@ body {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   box-shadow: 0 0 0 0.25rem rgba(255, 123, 0, 0.6) !important;
+}
+
+input[type="number"] {
+  width: 80px;
+}
+
+.form-select {
+  width: fit-content;
 }
 
 #phone {
