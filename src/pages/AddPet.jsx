@@ -4,7 +4,7 @@ import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import AddPetFormBodyTemplate from "../components/forms/AddPetFormBodyTemplate";
 
-const AddPet = ({title}) => {
+const AddPet = ({ title }) => {
     const {
         isHiddenAlert,
         setIsHiddenAlert,
@@ -51,10 +51,19 @@ const AddPet = ({title}) => {
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {
             setDraftPetData({ ...draftPetData, type: e.target.value });
-        } else if (e.target.id === "hypoallergenic-yes" || e.target.id === "hypoallergenic-no") {
-            setDraftPetData({ ...draftPetData, hypoallergenic: e.target.value });
+        } else if (
+            e.target.id === "hypoallergenic-yes" ||
+            e.target.id === "hypoallergenic-no"
+        ) {
+            setDraftPetData({
+                ...draftPetData,
+                hypoallergenic: e.target.value,
+            });
         } else {
-            setDraftPetData({ ...draftPetData, [e.target.id]: e.target.value });
+            let value = e.target.value;
+            if (e.target.id === "height" || e.target.id === "weight")
+                value = parseInt(value);
+            setDraftPetData({ ...draftPetData, [e.target.id]: value });
         }
     };
 
@@ -81,27 +90,29 @@ const AddPet = ({title}) => {
     };
 
     return (
-        <PageBasedForm
-            onSubmit={handleSubmit}
-            headerTitle="Add Pet"
-            btnSubmitText="Add"
-            isHiddenAlert={isHiddenAlert.addPetForm}
-            alertVariant={alertVariant.addPetForm}
-            alertMsg={alertMsg.addPetForm}
-        >
-            <AddPetFormBodyTemplate
-                handleChange={handleChange}
-                breed={breed}
-                name={name}
-                status={status}
-                photo={photo}
-                height={height}
-                weight={weight}
-                color={color}
-                bio={bio}
-                dietRestrict={dietRestrict}
-            />
-        </PageBasedForm>
+        <div className="py-4">
+            <PageBasedForm
+                onSubmit={handleSubmit}
+                headerTitle="Add Pet"
+                btnSubmitText="Add"
+                isHiddenAlert={isHiddenAlert.addPetForm}
+                alertVariant={alertVariant.addPetForm}
+                alertMsg={alertMsg.addPetForm}
+            >
+                <AddPetFormBodyTemplate
+                    handleChange={handleChange}
+                    breed={breed}
+                    name={name}
+                    status={status}
+                    photo={photo}
+                    height={height}
+                    weight={weight}
+                    color={color}
+                    bio={bio}
+                    dietRestrict={dietRestrict}
+                />
+            </PageBasedForm>
+        </div>
     );
 };
 

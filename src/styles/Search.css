@@ -1,0 +1,31 @@
+#search {
+    padding: 24px;
+}
+
+#search-form-container {
+    width: 450px;
+    margin-right: 20px;
+}
+
+#search-form-container form {
+    width: 100%;
+}
+
+#advanced-search-toggle-container label {
+    text-align: right;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    #search {
+        flex-direction: column;
+        padding: 24px 12px;
+    }
+
+    #search-form-container {
+        width: 100%;
+        align-self: center;
+        margin-right: initial;
+        margin-bottom: 10px;
+    }
+}

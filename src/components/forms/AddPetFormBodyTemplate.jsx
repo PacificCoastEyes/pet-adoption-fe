@@ -81,30 +81,36 @@ const AddPetFormBodyTemplate = ({
                 onChange={handleChange}
                 required
             />
-            <label htmlFor="height" className="mt-2 mb-1">
-                Height (cm)
-            </label>
-            <Form.Control
-                type="number"
-                id="height"
-                min="0"
-                max="999"
-                value={height}
-                onChange={handleChange}
-                required
-            />
-            <label htmlFor="weight" className="mt-2 mb-1">
-                Weight (kg)
-            </label>
-            <Form.Control
-                type="number"
-                id="weight"
-                min="0"
-                max="999"
-                value={weight}
-                onChange={handleChange}
-                required
-            />
+            <Form.Group className="d-flex">
+                <div className="me-4">
+                    <label htmlFor="height" className="mt-2 mb-1">
+                        Height (cm)
+                    </label>
+                    <Form.Control
+                        type="number"
+                        id="height"
+                        min="0"
+                        max="999"
+                        value={height}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="weight" className="mt-2 mb-1">
+                        Weight (kg)
+                    </label>
+                    <Form.Control
+                        type="number"
+                        id="weight"
+                        min="0"
+                        max="999"
+                        value={weight}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+            </Form.Group>
             <label htmlFor="color" className="mt-2 mb-1">
                 Color
             </label>
