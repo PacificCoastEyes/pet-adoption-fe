@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import SearchFormBodyTemplate from "../components/forms/SearchFormBodyTemplate";
+import PetCard from "../components/PetCard";
 import "../styles/Search.css";
 
 const Search = ({ title }) => {
@@ -25,7 +26,9 @@ const Search = ({ title }) => {
         weight: "",
     });
 
-    const { name, status, height, weight } = draftSearchData;
+    const { type, name, status, height, weight } = draftSearchData;
+
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
         /* eslint-enable */
@@ -33,6 +36,15 @@ const Search = ({ title }) => {
         resetAlertPageBasedForm("searchForm");
         /* eslint-disable */
     }, []);
+
+    useEffect(() => {
+        setAlertMsg({
+            ...alertVariant,
+            searchForm: `${searchResults.length} result${
+                searchResults.length !== 1 ? "s" : ""
+            } found`,
+        });
+    }, [searchResults]);
 
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {
@@ -55,10 +67,19 @@ const Search = ({ title }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        setSearchResults([]);
         try {
             setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
             setAlertVariant({ ...alertVariant, searchForm: "success" });
-            setAlertMsg({ ...alertVariant, searchForm: "results found" });
+            const petKeys = Object.keys(localStorage).filter(
+                key => !key.includes("@")
+            );
+            if (petKeys.length === 0) throw new Error("noResults");
+            const pets = [];
+            petKeys.forEach(key =>
+                pets.push(JSON.parse(localStorage.getItem(key)))
+            );
+            setSearchResults(pets.filter(pet => pet.type === type));
         } catch (err) {
             setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
             setAlertVariant({ ...alertVariant, searchForm: "danger" });
@@ -103,8 +124,17 @@ const Search = ({ title }) => {
                     />
                 </PageBasedForm>
             </div>
-            <div>
-                sfkldsjf
+            <div className="d-flex flex-wrap" id="search-results-container">
+                {searchResults.length > 0 &&
+                    searchResults.map(result => (
+                        <PetCard
+                            key={result.id}
+                            id={result.id}
+                            type={result.type}
+                            name={result.name}
+                            status={result.status}
+                        />
+                    ))}
             </div>
         </div>
     );

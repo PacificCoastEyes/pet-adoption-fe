@@ -19,7 +19,7 @@ const AddPet = ({ title }) => {
         type: "",
         breed: "",
         name: "",
-        status: "",
+        status: "available",
         photo: "",
         height: "",
         weight: "",
