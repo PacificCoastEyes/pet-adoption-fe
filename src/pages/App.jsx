@@ -6,6 +6,7 @@ import PageBasedFormContextProvider from "../contexts/PageBasedFormContext";
 import Home from "./Home";
 import Profile from "./Profile";
 import AddPet from "./AddPet";
+import Search from "./Search";
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
                                 <Route
                                     path="/login"
                                     element={
-                                        <PrivateRoute testingFor="isAlreadyLoggedIn">
+                                        <PrivateRoute testingFor="isNotLoggedIn">
                                             <Home
                                                 title="Login | The Pet Haven"
                                                 isAuthenticating
@@ -36,19 +37,19 @@ function App() {
                                 <Route
                                     path="/signup"
                                     element={
-                                        // <PrivateRoute testingFor="isAlreadyLoggedIn">
-                                            <Home
-                                                title="Sign Up | The Pet Haven"
-                                                isAuthenticating
-                                                isSigningUp={true}
-                                            />
+                                        // <PrivateRoute testingFor="isNotLoggedIn">
+                                        <Home
+                                            title="Sign Up | The Pet Haven"
+                                            isAuthenticating
+                                            isSigningUp={true}
+                                        />
                                         // </PrivateRoute>
                                     }
                                 />
                                 <Route
                                     path="/logout"
                                     element={
-                                        <PrivateRoute testingFor="isNotLoggedIn">
+                                        <PrivateRoute testingFor="isLoggedIn">
                                             <Home
                                                 title="Logout | The Pet Haven"
                                                 isLoggingOut
@@ -59,7 +60,7 @@ function App() {
                                 <Route
                                     path="/profile"
                                     element={
-                                        <PrivateRoute testingFor="isNotLoggedIn">
+                                        <PrivateRoute testingFor="isLoggedIn">
                                             <Profile title="My Profile | The Pet Haven" />
                                         </PrivateRoute>
                                     }
@@ -70,6 +71,12 @@ function App() {
                                         <PrivateRoute testingFor="isAdmin">
                                             <AddPet title="Add Pet | The Pet Haven" />
                                         </PrivateRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/search"
+                                    element={
+                                        <Search title="Search Pets | The Pet Haven" />
                                     }
                                 />
                             </Routes>

@@ -1,0 +1,52 @@
+.pet-card {
+    min-width: 250px;
+    margin: 12px;
+    box-shadow: 0 0 10px 2px #bbb;
+}
+
+.pet-card img {
+    max-width: 300px;
+    max-height: 250px;
+    border-radius: 5px;
+}
+
+.badge {
+    padding: 10px;
+    font-weight: normal;
+}
+
+.badge-type-dog {
+    background-color: rgb(62, 62, 252) !important;
+}
+
+.badge-type-cat {
+    background-color: rgb(255, 34, 0) !important;
+}
+
+.badge-status-adopted {
+    background-color: var(--bs-danger) !important;
+}
+.badge-status-fostered {
+    background-color: var(--bs-warning) !important;
+    color: black;
+}
+.badge-status-available {
+    background-color: var(--bs-success) !important;
+}
+
+.btn-see-more {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 768px) {
+    .pet-card {
+        margin: 6px;
+        width: 100%;
+    }
+
+    .pet-card img {
+        min-width: 100%;
+        max-height: 100%;
+    }
+}

@@ -7,7 +7,6 @@ import "../styles/Profile.css";
 import "react-phone-input-2/lib/bootstrap.css";
 
 const Profile = ({ title }) => {
-    
     const { currentUser, setCurrentUser } = useContext(UserContext);
     const {
         isHiddenAlert,
@@ -25,7 +24,6 @@ const Profile = ({ title }) => {
         resetAlertPageBasedForm("profileForm");
         /* eslint-disable */
     }, []);
-
 
     const [draftProfileData, setDraftProfileData] = useState({
         ...currentUser,
@@ -71,7 +69,7 @@ const Profile = ({ title }) => {
         });
     };
 
-    const alertErrorGeneric = (err) => {
+    const alertErrorGeneric = err => {
         setAlertMsg({
             ...alertMsg,
             profileForm: `Sorry, there was an error saving your profile - ${err}`,
@@ -142,26 +140,28 @@ const Profile = ({ title }) => {
     };
 
     return (
-        <PageBasedForm
-            onSubmit={handleSubmit}
-            headerTitle="My Profile"
-            btnSubmitText="Save"
-            isHiddenAlert={isHiddenAlert.profileForm}
-            alertVariant={alertVariant.profileForm}
-            alertMsg={alertMsg.profileForm}
-        >
-            <ProfileFormBodyTemplate
-                handleChange={handleChange}
-                firstName={firstName}
-                lastName={lastName}
-                email={email}
-                phone={phone}
-                newPassword={newPassword}
-                confirmPassword={confirmPassword}
-                currentPassword={currentPassword}
-                bio={bio}
-            />
-        </PageBasedForm>
+        <div className="py-4">
+            <PageBasedForm
+                onSubmit={handleSubmit}
+                headerTitle="My Profile"
+                btnSubmitText="Save"
+                isHiddenAlert={isHiddenAlert.profileForm}
+                alertVariant={alertVariant.profileForm}
+                alertMsg={alertMsg.profileForm}
+            >
+                <ProfileFormBodyTemplate
+                    handleChange={handleChange}
+                    firstName={firstName}
+                    lastName={lastName}
+                    email={email}
+                    phone={phone}
+                    newPassword={newPassword}
+                    confirmPassword={confirmPassword}
+                    currentPassword={currentPassword}
+                    bio={bio}
+                />
+            </PageBasedForm>
+        </div>
     );
 };
 

@@ -12,11 +12,19 @@ const PageBasedForm = ({
     isHiddenAlert,
     alertVariant,
     alertMsg,
+    isSearchForm,
+    isAdvancedSearch,
+    setIsAdvancedSearch,
 }) => {
     return (
         <div className="d-flex justify-content-center">
             <Form className="form" onSubmit={onSubmit}>
-                <PageBasedFormHeader headerTitle={headerTitle} />
+                <PageBasedFormHeader
+                    headerTitle={headerTitle}
+                    isSearchForm={isSearchForm}
+                    isAdvancedSearch={isAdvancedSearch}
+                    setIsAdvancedSearch={setIsAdvancedSearch}
+                />
                 <PageBasedFormBody>{children}</PageBasedFormBody>
                 <PageBasedFormFooter
                     btnSubmitText={btnSubmitText}

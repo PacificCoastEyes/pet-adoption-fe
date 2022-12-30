@@ -47,8 +47,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
                 password,
                 isAdmin,
             } = signupFormData;
-            localStorage.setItem(
-                signupFormData.email,
+            localStorage.setItem(email,
                 JSON.stringify({
                     firstName,
                     lastName,

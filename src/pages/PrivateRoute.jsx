@@ -6,12 +6,10 @@ const PrivateRoute = ({children, testingFor}) => {
 
     const {isLoggedIn, currentUser} = useContext(UserContext);
 
-    console.log(testingFor);
-
     switch(testingFor) {
-        case "isNotLoggedIn":
+        case "isLoggedIn":
             return isLoggedIn ? children : <Navigate to="/" />;
-        case "isAlreadyLoggedIn":
+        case "isNotLoggedIn":
             return isLoggedIn ? <Navigate to="/" /> : children;
         case "isAdmin":
             return currentUser.isAdmin ? children : <Navigate to="/" />;

@@ -7,14 +7,17 @@ const PageBasedFormContextProvider = ({ children }) => {
     const [isHiddenAlert, setIsHiddenAlert] = useState({
         profileForm: true,
         addPetForm: true,
+        searchForm: true
     });
     const [alertVariant, setAlertVariant] = useState({
         profileForm: "",
         addPetForm: "",
+        searchForm: ""
     });
     const [alertMsg, setAlertMsg] = useState({
         profileForm: "",
         addPetForm: "",
+        searchForm: ""
     });
 
     const resetAlertPageBasedForm = form => {
