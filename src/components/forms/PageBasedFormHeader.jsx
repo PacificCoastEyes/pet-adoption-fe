@@ -17,7 +17,7 @@ const PageBasedFormHeader = ({
                 <Form.Group className="d-flex align-items-center mt-1" id="advanced-search-toggle-container">
                     <label htmlFor="advanced-search-toggle">Advanced Search</label>
                     <Form.Switch
-                        id="advanced-search-toggle"
+                        className="advanced-search-toggle"
                         value={isAdvancedSearch}
                         onChange={() => setIsAdvancedSearch(!isAdvancedSearch)}
                     />

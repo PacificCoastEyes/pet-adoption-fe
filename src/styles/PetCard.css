@@ -1,6 +1,7 @@
 .pet-card {
     min-width: 250px;
     margin: 12px;
+    background-color: #ddd;
     box-shadow: 0 0 10px 2px #bbb;
 }
 

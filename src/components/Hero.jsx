@@ -18,8 +18,7 @@ const Hero = () => {
             }
         };
         const slideInterval = setInterval(advanceSlide, 10000);
-        // eslint-disable-next-line
-    }, []);
+    }, [slideNum]);
 
     const currentHour = new Date().getHours();
     let timeOfDay = "";
