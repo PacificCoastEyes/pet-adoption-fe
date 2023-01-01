@@ -17,7 +17,6 @@ const AuthModalContextProvider = ({ children }) => {
             phone: "",
             password: "",
             confirmPassword: "",
-            isAdmin: false
         },
 
         isHiddenAlert: {

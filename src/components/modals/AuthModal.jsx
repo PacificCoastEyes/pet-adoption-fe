@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "../forms/LoginForm";
 import SignUpForm from "../forms/SignUpForm";
 import "../../styles/AuthModal.css";
+import { instance } from "../../axiosInstance";
 
 const AuthModal = ({ handleAuthModalClose }) => {
     const { isAuthenticating, isSigningUp, setIsLoggedIn, setCurrentUser } =
@@ -35,28 +36,18 @@ const AuthModal = ({ handleAuthModalClose }) => {
         }
     };
 
-    const handleSignup = () => {
+    const handleSignup = async () => {
         try {
-            if (signupFormData.password !== signupFormData.confirmPassword)
-                throw new Error("Passwords do not match");
-            const {
+            const { firstName, lastName, email, phone, password, confirmPassword } =
+                signupFormData;
+            await instance.post("http://localhost:8080/signup", {
                 firstName,
                 lastName,
                 email,
                 phone,
                 password,
-                isAdmin,
-            } = signupFormData;
-            localStorage.setItem(email,
-                JSON.stringify({
-                    firstName,
-                    lastName,
-                    email,
-                    phone,
-                    password,
-                    isAdmin,
-                })
-            );
+                confirmPassword
+            });
             setIsHiddenAlert({
                 signupSuccess: false,
                 authError: { ...isHiddenAlert.authError, signup: true },
@@ -66,12 +57,11 @@ const AuthModal = ({ handleAuthModalClose }) => {
                 resetAuthModal();
             }, 3000);
         } catch (err) {
-            setMsgAlertAuthError(err);
+            setMsgAlertAuthError(err.response.data);
             setIsHiddenAlert({
                 ...isHiddenAlert,
                 authError: { ...isHiddenAlert.authError, signup: false },
             });
-            console.log(err);
         }
     };
 

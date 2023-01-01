@@ -27,7 +27,7 @@ const PetCard = ({ type, name, status }) => {
     };
 
     return (
-        <Card bg="primary" className="pet-card">
+        <Card className="pet-card">
             <Card.Header className="d-flex justify-content-between align-items-center p-2">
                 <Badge pill className={`badge-type-${type}`}>
                     {capitalize(type)}
@@ -51,7 +51,7 @@ const PetCard = ({ type, name, status }) => {
                 </div>
             </Card.Body>
             <Card.Footer className="p-2">
-                <Button variant="secondary" className="btn-see-more">
+                <Button variant="primary" className="btn-see-more">
                     See More
                 </Button>
             </Card.Footer>

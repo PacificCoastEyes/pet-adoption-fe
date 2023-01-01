@@ -11,6 +11,7 @@
 
 #search-form-container form {
     width: 100%;
+    box-shadow: 0 0 10px 2px rgb(134, 134, 134);
 }
 
 #advanced-search-toggle-container label {
