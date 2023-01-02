@@ -5,7 +5,6 @@ const AddPetFormBodyTemplate = ({
     breed,
     name,
     status,
-    photo,
     height,
     weight,
     color,
@@ -76,8 +75,8 @@ const AddPetFormBodyTemplate = ({
             </label>
             <Form.Control
                 type="file"
+                accept="image/*"
                 id="photo"
-                value={photo}
                 onChange={handleChange}
                 required
             />

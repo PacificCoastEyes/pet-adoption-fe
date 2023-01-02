@@ -1,5 +1,6 @@
 import { createContext } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { instance } from "../axiosInstance";
 
 export const UserContext = createContext();
 
@@ -8,7 +9,24 @@ const UserContextProvider = ({ children }) => {
     const [isSigningUp, setIsSigningUp] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState(
+        JSON.parse(localStorage.getItem("currentUser")) || {}
+    );
+
+    useEffect(() => {
+        const fetchPrevUser = async () => {
+            try {
+                const res = await instance.get(
+                    "http://localhost:8080/fetchPrevUser"
+                );
+                setCurrentUser({ ...res.data.user });
+                setIsLoggedIn(true);
+            } catch (err) {
+                return false;
+            }
+        };
+        fetchPrevUser();
+    }, []);
 
     return (
         <UserContext.Provider

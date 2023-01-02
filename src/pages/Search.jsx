@@ -3,6 +3,7 @@ import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import SearchFormBodyTemplate from "../components/forms/SearchFormBodyTemplate";
 import PetCard from "../components/PetCard";
+import { SearchHeart } from "react-bootstrap-icons";
 import "../styles/Search.css";
 
 const Search = ({ title }) => {
@@ -125,7 +126,7 @@ const Search = ({ title }) => {
                 </PageBasedForm>
             </div>
             <div className="d-flex flex-wrap" id="search-results-container">
-                {searchResults.length > 0 &&
+                {searchResults.length > 0 ? (
                     searchResults.map(result => (
                         <PetCard
                             key={result.id}
@@ -134,7 +135,16 @@ const Search = ({ title }) => {
                             name={result.name}
                             status={result.status}
                         />
-                    ))}
+                    ))
+                ) : (
+                    <div
+                        className="d-flex justify-content-center align-items-center"
+                        id="search-heart"
+                    >
+                        <SearchHeart />
+                        <h1>Your search results will appear here</h1>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -25,6 +25,17 @@
     padding: 12px;
 }
 
+#search-heart {
+    height: calc(100vh - 99px);
+    width: 100%;
+}
+
+#search-heart svg {
+    height: 200px;
+    width: 200px;
+    fill: var(--bs-secondary);
+}
+
 @media screen and (max-width: 1000px) {
     #search {
         flex-direction: column;
@@ -40,5 +51,13 @@
     #search-results-container {
         width: 100%;
         padding: 6px;
+    }
+
+    #search-heart {
+        flex-direction: column;
+    }
+
+    #search-heart svg {
+        margin-bottom: 30px;
     }
 }

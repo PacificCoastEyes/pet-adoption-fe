@@ -18,12 +18,8 @@ import PawNav from "../icons/paw-nav";
 import "../styles/Menu.css";
 
 const Menu = () => {
-    const {
-        setIsAuthenticating,
-        setIsLoggingOut,
-        isLoggedIn,
-        currentUser,
-    } = useContext(UserContext);
+    const { setIsAuthenticating, setIsLoggingOut, isLoggedIn, currentUser } =
+        useContext(UserContext);
 
     const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
     const toggleOffcanvas = () => {
@@ -102,7 +98,7 @@ const Menu = () => {
                                     </Button>
                                 </NavLink>
                             )}
-                            {isLoggedIn && currentUser.isAdmin && (
+                            {isLoggedIn && currentUser.isAdmin === 1 && (
                                 <NavLink
                                     to="/addpet"
                                     onClick={handleOffcanvasClose}
@@ -113,7 +109,7 @@ const Menu = () => {
                                     </Button>
                                 </NavLink>
                             )}
-                            {isLoggedIn && currentUser.isAdmin && (
+                            {isLoggedIn && currentUser.isAdmin === 1 && (
                                 <NavLink
                                     to="/dashboard"
                                     onClick={handleOffcanvasClose}

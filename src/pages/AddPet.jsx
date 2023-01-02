@@ -29,17 +29,8 @@ const AddPet = ({ title }) => {
         dietRestrict: "",
     });
 
-    const {
-        breed,
-        name,
-        status,
-        photo,
-        height,
-        weight,
-        color,
-        bio,
-        dietRestrict,
-    } = draftPetData;
+    const { breed, name, status, height, weight, color, bio, dietRestrict } =
+        draftPetData;
 
     useEffect(() => {
         /* eslint-enable */
@@ -58,6 +49,11 @@ const AddPet = ({ title }) => {
             setDraftPetData({
                 ...draftPetData,
                 hypoallergenic: e.target.value,
+            });
+        } else if (e.target.id === "photo") {
+            setDraftPetData({
+                ...draftPetData,
+                [e.target.id]: e.target.files[0],
             });
         } else {
             let value = e.target.value;
@@ -104,7 +100,6 @@ const AddPet = ({ title }) => {
                     breed={breed}
                     name={name}
                     status={status}
-                    photo={photo}
                     height={height}
                     weight={weight}
                     color={color}
