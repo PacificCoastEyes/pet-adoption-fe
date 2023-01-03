@@ -16,13 +16,8 @@ import "../../styles/AuthModal.css";
 import { instance } from "../../axiosInstance";
 
 const AuthModal = ({ handleAuthModalClose }) => {
-    const {
-        isAuthenticating,
-        isSigningUp,
-        setIsLoggedIn,
-        currentUser,
-        setCurrentUser,
-    } = useContext(UserContext);
+    const { isAuthenticating, isSigningUp, setIsLoggedIn, setCurrentUser } =
+        useContext(UserContext);
     const {
         initialStateSchemas,
         stateSettersList,
@@ -107,7 +102,6 @@ const AuthModal = ({ handleAuthModalClose }) => {
             handleAuthModalClose();
             resetAuthModal();
             setShowAuthSuccessToast(true);
-            console.log(currentUser);
             setTextAuthSuccessToast(
                 `Welcome back to The Pet Haven, ${res.data.user.firstName}!`
             );

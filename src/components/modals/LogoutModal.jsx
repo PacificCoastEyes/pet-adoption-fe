@@ -17,7 +17,7 @@ const LogoutModal = ({ handleLogoutModalClose }) => {
             clearCookie();
             localStorage.removeItem("currentUser");
         }
-    }, [isLoggingOut, setIsLoggedIn, setCurrentUser]);
+    }, [isLoggingOut, setCurrentUser, setIsLoggedIn]);
 
     return (
         <Modal
