@@ -7,7 +7,7 @@ const ProfileFormBodyTemplate = ({
     lastName,
     email,
     phone,
-    newPassword,
+    password,
     confirmPassword,
     currentPassword,
     bio,
@@ -79,9 +79,9 @@ const ProfileFormBodyTemplate = ({
                 </label>
                 <Form.Control
                     type="password"
-                    id="newPassword"
+                    id="password"
                     placeholder="New Password"
-                    value={newPassword}
+                    value={password}
                     onChange={handleChange}
                 />
                 <label htmlFor="confirmPassword" className="mt-2 mb-1">
@@ -93,7 +93,7 @@ const ProfileFormBodyTemplate = ({
                     placeholder="Re-type New Password"
                     value={confirmPassword}
                     onChange={handleChange}
-                    disabled={newPassword ? false : true}
+                    disabled={password ? false : true}
                 />
                 <label htmlFor="currentPassword" className="mt-2 mb-1">
                     Enter Current Password
@@ -104,7 +104,7 @@ const ProfileFormBodyTemplate = ({
                     placeholder="Current Password"
                     value={currentPassword}
                     onChange={handleChange}
-                    disabled={newPassword && confirmPassword ? false : true}
+                    disabled={password && confirmPassword ? false : true}
                 />
             </Form.Group>
         </>

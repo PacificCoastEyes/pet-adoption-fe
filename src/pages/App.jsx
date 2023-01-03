@@ -52,7 +52,7 @@ function App() {
                                         <PrivateRoute testingFor="isLoggedIn">
                                             <Home
                                                 title="Logout | The Pet Haven"
-                                                isLoggingOut
+                                                isLoggingOut={true}
                                             />
                                         </PrivateRoute>
                                     }

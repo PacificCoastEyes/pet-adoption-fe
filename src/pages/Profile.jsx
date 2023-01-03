@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
+import { instance } from "../axiosInstance";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import ProfileFormBodyTemplate from "../components/forms/ProfileFormBodyTemplate";
 import "../styles/Profile.css";
 import "react-phone-input-2/lib/bootstrap.css";
 
 const Profile = ({ title }) => {
-    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
     const {
         isHiddenAlert,
         setIsHiddenAlert,
@@ -19,62 +20,54 @@ const Profile = ({ title }) => {
     } = useContext(PageBasedFormContext);
 
     useEffect(() => {
-        /* eslint-enable */
         document.title = title;
         resetAlertPageBasedForm("profileForm");
-        /* eslint-disable */
+        // eslint-disable-next-line
     }, []);
 
     const [draftProfileData, setDraftProfileData] = useState({
-        ...currentUser,
-        newPassword: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        bio: "",
+        password: "",
         confirmPassword: "",
         currentPassword: "",
-        bio: `${currentUser.bio ? currentUser.bio : ""}`,
     });
+
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
+                const res = await instance.get(
+                    `http://localhost:8080/user/${currentUser.id}`
+                );
+                for (const field in res.data.user) {
+                    if (res.data.user[field] === null)
+                        res.data.user[field] = "";
+                }
+                setDraftProfileData({
+                    ...draftProfileData,
+                    ...res.data.user,
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchUserDetails();
+        // eslint-disable-next-line
+    }, [title, currentUser.id]);
 
     const {
         firstName,
         lastName,
         email,
         phone,
-        newPassword,
+        password,
         confirmPassword,
         currentPassword,
         bio,
     } = draftProfileData;
-
-    const alertNewPasswordMismatch = () => {
-        setAlertMsg({ ...alertMsg, profileForm: "New passwords do not match" });
-    };
-
-    const alertConfirmPasswordRequired = () => {
-        setAlertMsg({
-            ...alertMsg,
-            profileForm: "Please re-enter your new password",
-        });
-    };
-
-    const alertCurrentPasswordRequired = () => {
-        setAlertMsg({
-            ...alertMsg,
-            profileForm: "Please enter your current password",
-        });
-    };
-
-    const alertCurrentPasswordIncorrect = () => {
-        setAlertMsg({
-            ...alertMsg,
-            profileForm: "The current password you entered is incorrect",
-        });
-    };
-
-    const alertErrorGeneric = err => {
-        setAlertMsg({
-            ...alertMsg,
-            profileForm: `Sorry, there was an error saving your profile - ${err}`,
-        });
-    };
 
     const alertSuccess = () => {
         setIsHiddenAlert({ ...isHiddenAlert, profileForm: false });
@@ -90,51 +83,21 @@ const Profile = ({ title }) => {
         });
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         try {
-            if (newPassword && newPassword !== confirmPassword)
-                throw new Error("newPasswordMismatch");
-            if (newPassword && !confirmPassword)
-                throw new Error("confirmPasswordRequired");
-            if (newPassword && !currentPassword)
-                throw new Error("currentPasswordRequired");
-            if (newPassword && currentPassword !== currentUser.password)
-                throw new Error("currentPasswordIncorrect");
-            const relevantUserDataToSave = {
-                firstName,
-                lastName,
-                email,
-                phone,
-                password: `${newPassword ? newPassword : currentUser.password}`,
-                bio,
-                isAdmin: currentUser.isAdmin,
-            };
-            localStorage.setItem(
-                currentUser.email,
-                JSON.stringify(relevantUserDataToSave)
+            await instance.put(
+                `http://localhost:8080/user/${currentUser.id}`,
+                draftProfileData
             );
-            setCurrentUser(relevantUserDataToSave);
             alertSuccess();
         } catch (err) {
             setIsHiddenAlert({ ...isHiddenAlert, profileForm: false });
             setAlertVariant({ ...alertVariant, profileForm: "danger" });
-            switch (err.message) {
-                case "newPasswordMismatch":
-                    alertNewPasswordMismatch();
-                    break;
-                case "confirmPasswordRequired":
-                    alertConfirmPasswordRequired();
-                    break;
-                case "currentPasswordRequired":
-                    alertCurrentPasswordRequired();
-                    break;
-                case "currentPasswordIncorrect":
-                    alertCurrentPasswordIncorrect();
-                    break;
-                default:
-                    alertErrorGeneric(err);
-            }
+            setAlertMsg({
+                ...alertMsg,
+                profileForm: `There was a problem updating your profile. ${err.response.data}`,
+            });
             console.log(err);
         }
     };
@@ -155,7 +118,7 @@ const Profile = ({ title }) => {
                     lastName={lastName}
                     email={email}
                     phone={phone}
-                    newPassword={newPassword}
+                    password={password}
                     confirmPassword={confirmPassword}
                     currentPassword={currentPassword}
                     bio={bio}
