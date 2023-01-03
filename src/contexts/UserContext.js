@@ -19,7 +19,8 @@ const UserContextProvider = ({ children }) => {
                 const res = await instance.get(
                     "http://localhost:8080/fetchPrevUser"
                 );
-                setCurrentUser({ ...res.data.user });
+                const { id, firstName, isAdmin } = res.data.user;
+                setCurrentUser({ id, firstName, isAdmin });
                 setIsLoggedIn(true);
             } catch (err) {
                 return false;
