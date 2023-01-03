@@ -2,21 +2,27 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({children, testingFor}) => {
+const PrivateRoute = ({ children, testingFor }) => {
+    const { currentUser } = useContext(UserContext);
 
-    const {isLoggedIn, currentUser} = useContext(UserContext);
-
-    switch(testingFor) {
+    switch (testingFor) {
         case "isLoggedIn":
-            return isLoggedIn ? children : <Navigate to="/" />;
+            return Object.keys(currentUser).length ? (
+                children
+            ) : (
+                <Navigate to="/" />
+            );
         case "isNotLoggedIn":
-            return isLoggedIn ? <Navigate to="/" /> : children;
+            return Object.keys(currentUser).length ? (
+                <Navigate to="/" />
+            ) : (
+                children
+            );
         case "isAdmin":
-            return currentUser.isAdmin ? children : <Navigate to="/" />;
+            return currentUser.isAdmin === 1 ? children : <Navigate to="/" />;
         default:
             return <Navigate to="/" />;
     }
-    
-}
+};
 
 export default PrivateRoute;

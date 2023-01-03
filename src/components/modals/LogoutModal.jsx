@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { Modal } from "react-bootstrap";
+import { instance } from "../../axiosInstance";
 
 const LogoutModal = ({ handleLogoutModalClose }) => {
     const { setIsLoggedIn, isLoggingOut, setCurrentUser } =
@@ -8,12 +9,15 @@ const LogoutModal = ({ handleLogoutModalClose }) => {
 
     useEffect(() => {
         if (isLoggingOut) {
-            /* eslint-enable */
             setIsLoggedIn(false);
             setCurrentUser({});
-            /* eslint-disable */
+            const clearCookie = async () => {
+                return await instance.get("http://localhost:8080/logout");
+            };
+            clearCookie();
+            localStorage.removeItem("currentUser");
         }
-    }, [isLoggingOut]);
+    }, [isLoggingOut, setIsLoggedIn, setCurrentUser]);
 
     return (
         <Modal

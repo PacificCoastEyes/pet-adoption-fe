@@ -28,7 +28,7 @@ function App() {
                                         <PrivateRoute testingFor="isNotLoggedIn">
                                             <Home
                                                 title="Login | The Pet Haven"
-                                                isAuthenticating
+                                                isAuthenticating={true}
                                                 isSigningUp={false}
                                             />
                                         </PrivateRoute>
@@ -37,13 +37,13 @@ function App() {
                                 <Route
                                     path="/signup"
                                     element={
-                                        // <PrivateRoute testingFor="isNotLoggedIn">
-                                        <Home
-                                            title="Sign Up | The Pet Haven"
-                                            isAuthenticating
-                                            isSigningUp={true}
-                                        />
-                                        // </PrivateRoute>
+                                        <PrivateRoute testingFor="isNotLoggedIn">
+                                            <Home
+                                                title="Sign Up | The Pet Haven"
+                                                isAuthenticating={true}
+                                                isSigningUp={true}
+                                            />
+                                        </PrivateRoute>
                                     }
                                 />
                                 <Route

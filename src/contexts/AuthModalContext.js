@@ -20,7 +20,6 @@ const AuthModalContextProvider = ({ children }) => {
         },
 
         isHiddenAlert: {
-            signupSuccess: true,
             authError: {
                 signup: true,
                 login: true,
@@ -29,15 +28,28 @@ const AuthModalContextProvider = ({ children }) => {
         msgAlertAuthError: "",
     };
 
-    const [loginFormData, setLoginFormData] = useState(initialStateSchemas.loginFormData);
+    const [loginFormData, setLoginFormData] = useState(
+        initialStateSchemas.loginFormData
+    );
 
-    const [signupFormData, setSignupFormData] = useState(initialStateSchemas.signupFormData);
+    const [signupFormData, setSignupFormData] = useState(
+        initialStateSchemas.signupFormData
+    );
 
-    const [isHiddenAlert, setIsHiddenAlert] = useState(initialStateSchemas.isHiddenAlert);
-    
-    const [msgAlertAuthError, setMsgAlertAuthError] = useState(initialStateSchemas.msgAlertAuthError);
+    const [isHiddenAlert, setIsHiddenAlert] = useState(
+        initialStateSchemas.isHiddenAlert
+    );
 
-    const stateSettersList = [setLoginFormData, setSignupFormData, setIsHiddenAlert, setMsgAlertAuthError]
+    const [msgAlertAuthError, setMsgAlertAuthError] = useState(
+        initialStateSchemas.msgAlertAuthError
+    );
+
+    const stateSettersList = [
+        setLoginFormData,
+        setSignupFormData,
+        setIsHiddenAlert,
+        setMsgAlertAuthError,
+    ];
 
     return (
         <AuthModalContext.Provider
