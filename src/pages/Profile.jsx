@@ -92,13 +92,13 @@ const Profile = ({ title }) => {
             );
             alertSuccess();
         } catch (err) {
+            console.log(err);
             setIsHiddenAlert({ ...isHiddenAlert, profileForm: false });
             setAlertVariant({ ...alertVariant, profileForm: "danger" });
             setAlertMsg({
                 ...alertMsg,
                 profileForm: `There was a problem updating your profile. ${err.response.data}`,
             });
-            console.log(err);
         }
     };
 
