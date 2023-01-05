@@ -1,8 +1,8 @@
-import { v4 as uuid } from "uuid";
 import { useContext, useEffect, useState } from "react";
 import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import AddPetFormBodyTemplate from "../components/forms/AddPetFormBodyTemplate";
+import { instance } from "../axiosInstance";
 
 const AddPet = ({ title }) => {
     const {
@@ -15,22 +15,29 @@ const AddPet = ({ title }) => {
         resetAlertPageBasedForm,
     } = useContext(PageBasedFormContext);
 
-    const [draftPetData, setDraftPetData] = useState({
+    const draftPetDataSchema = {
         type: "",
         breed: "",
         name: "",
         status: "available",
-        photo: "",
+        photo: null,
         height: "",
         weight: "",
         color: "",
         bio: "",
-        hypoallergenic: false,
+        hypoallergenic: "",
         dietRestrict: "",
-    });
+    };
+
+    const [draftPetData, setDraftPetData] = useState(draftPetDataSchema);
 
     const { breed, name, status, height, weight, color, bio, dietRestrict } =
         draftPetData;
+
+    const resetDraftPetData = () => {
+        setDraftPetData(draftPetDataSchema);
+        document.getElementById("photo").value = null;
+    };
 
     useEffect(() => {
         /* eslint-enable */
@@ -63,17 +70,18 @@ const AddPet = ({ title }) => {
         }
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        const pet = {
-            id: uuid(),
-            ...draftPetData,
-        };
+        const formData = new FormData();
+        for (const field in draftPetData) {
+            formData.append(field, draftPetData[field]);
+        }
         try {
-            localStorage.setItem(pet.id, JSON.stringify(pet));
+            await instance.post("http://localhost:8080/pet", formData);
             setIsHiddenAlert({ ...isHiddenAlert, addPetForm: false });
             setAlertVariant({ ...isHiddenAlert, addPetForm: "success" });
             setAlertMsg({ ...isHiddenAlert, addPetForm: "Pet added!" });
+            resetDraftPetData();
         } catch (err) {
             setIsHiddenAlert({ ...isHiddenAlert, addPetForm: false });
             setAlertVariant({ ...isHiddenAlert, addPetForm: "danger" });
