@@ -60,4 +60,8 @@
     #search-heart svg {
         margin-bottom: 30px;
     }
+
+    #search-heart h1 {
+        text-align: center;
+    }
 }

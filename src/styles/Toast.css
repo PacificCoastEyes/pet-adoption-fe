@@ -1,0 +1,16 @@
+.toast-container {
+    margin-top: 100px;
+    margin-right: 20px;
+}
+
+.toast-header {
+    color: white;
+    background-color: var(--bs-secondary);
+}
+
+@media screen and (max-width: 768px) {
+    .toast-container {
+        position: fixed !important;
+        left: calc((100vw - 348px) / 2);
+    }
+}
