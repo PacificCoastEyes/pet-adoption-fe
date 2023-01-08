@@ -1,6 +1,12 @@
 import { Alert, Button } from "react-bootstrap";
 
-const PageBasedFormFooter = ({ isHiddenAlert, alertVariant, alertMsg, btnSubmitText }) => {
+const PageBasedFormFooter = ({
+    isHiddenAlert,
+    alertVariant,
+    alertMsg,
+    handleReset,
+    btnSubmitText,
+}) => {
     return (
         <div
             className={`form-footer d-flex justify-content-${
@@ -14,7 +20,12 @@ const PageBasedFormFooter = ({ isHiddenAlert, alertVariant, alertMsg, btnSubmitT
             >
                 {alertMsg}
             </Alert>
-            <Button type="submit">{btnSubmitText}</Button>
+            <div>
+                <Button onClick={handleReset} variant="light" className="me-2">
+                    Clear
+                </Button>
+                <Button type="submit">{btnSubmitText}</Button>
+            </div>
         </div>
     );
 };

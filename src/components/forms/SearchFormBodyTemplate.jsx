@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 const SearchFormBodyTemplate = ({
     isAdvancedSearch,
     handleChange,
+    type,
     status,
     name,
     height,
@@ -16,22 +17,22 @@ const SearchFormBodyTemplate = ({
                     <Form.Check
                         inline
                         type="radio"
-                        id="cat"
+                        id="dog"
                         name="type"
                         label="Dog"
                         value="dog"
+                        checked={type === "dog" ? true : false}
                         onChange={handleChange}
-                        required
                     />
                     <Form.Check
                         inline
                         type="radio"
-                        id="dog"
+                        id="cat"
                         name="type"
                         label="Cat"
                         value="cat"
+                        checked={type === "cat" ? true : false}
                         onChange={handleChange}
-                        required
                     />
                 </div>
             </Form.Group>
@@ -44,8 +45,10 @@ const SearchFormBodyTemplate = ({
                         id="status"
                         value={status}
                         onChange={handleChange}
-                        required
                     >
+                        <option value="" defaultChecked>
+                            Select
+                        </option>
                         <option value="available">Available</option>
                         <option value="fostered">Fostered</option>
                         <option value="adopted">Adopted</option>
@@ -58,7 +61,6 @@ const SearchFormBodyTemplate = ({
                         id="name"
                         value={name}
                         onChange={handleChange}
-                        required
                     />
                     <Form.Group className="d-flex mb-2">
                         <div className="me-4">
@@ -72,7 +74,6 @@ const SearchFormBodyTemplate = ({
                                 max="999"
                                 value={height}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                         <div>
@@ -86,7 +87,6 @@ const SearchFormBodyTemplate = ({
                                 max="999"
                                 value={weight}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                     </Form.Group>

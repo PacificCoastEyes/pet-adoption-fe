@@ -19,7 +19,7 @@ const AddPet = ({ title }) => {
         type: "",
         breed: "",
         name: "",
-        status: "available",
+        status: "",
         photo: null,
         height: "",
         weight: "",
@@ -31,10 +31,20 @@ const AddPet = ({ title }) => {
 
     const [draftPetData, setDraftPetData] = useState(draftPetDataSchema);
 
-    const { breed, name, status, height, weight, color, bio, dietRestrict } =
-        draftPetData;
+    const {
+        type,
+        breed,
+        name,
+        status,
+        height,
+        weight,
+        color,
+        bio,
+        hypoallergenic,
+        dietRestrict,
+    } = draftPetData;
 
-    const resetDraftPetData = () => {
+    const handleReset = () => {
         setDraftPetData(draftPetDataSchema);
         document.getElementById("photo").value = null;
     };
@@ -81,7 +91,7 @@ const AddPet = ({ title }) => {
             setIsHiddenAlert({ ...isHiddenAlert, addPetForm: false });
             setAlertVariant({ ...isHiddenAlert, addPetForm: "success" });
             setAlertMsg({ ...isHiddenAlert, addPetForm: "Pet added!" });
-            resetDraftPetData();
+            handleReset();
         } catch (err) {
             setIsHiddenAlert({ ...isHiddenAlert, addPetForm: false });
             setAlertVariant({ ...isHiddenAlert, addPetForm: "danger" });
@@ -97,6 +107,7 @@ const AddPet = ({ title }) => {
         <div className="py-4">
             <PageBasedForm
                 onSubmit={handleSubmit}
+                handleReset={handleReset}
                 headerTitle="Add Pet"
                 btnSubmitText="Add"
                 isHiddenAlert={isHiddenAlert.addPetForm}
@@ -105,6 +116,7 @@ const AddPet = ({ title }) => {
             >
                 <AddPetFormBodyTemplate
                     handleChange={handleChange}
+                    type={type}
                     breed={breed}
                     name={name}
                     status={status}
@@ -112,6 +124,7 @@ const AddPet = ({ title }) => {
                     weight={weight}
                     color={color}
                     bio={bio}
+                    hypoallergenic={hypoallergenic}
                     dietRestrict={dietRestrict}
                 />
             </PageBasedForm>

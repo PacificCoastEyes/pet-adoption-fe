@@ -3,6 +3,7 @@ import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import SearchFormBodyTemplate from "../components/forms/SearchFormBodyTemplate";
 import PetCard from "../components/PetCard";
+import axios from "axios";
 import { SearchHeart } from "react-bootstrap-icons";
 import "../styles/Search.css";
 
@@ -18,14 +19,19 @@ const Search = ({ title }) => {
     } = useContext(PageBasedFormContext);
 
     const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
-    const [draftSearchData, setDraftSearchData] = useState({
+
+    const draftSearchDataSchema = {
         type: "",
-        status: "available",
+        status: "",
         name: "",
         photo: "",
         height: "",
         weight: "",
-    });
+    };
+
+    const [draftSearchData, setDraftSearchData] = useState(
+        draftSearchDataSchema
+    );
 
     const { type, name, status, height, weight } = draftSearchData;
 
@@ -66,21 +72,25 @@ const Search = ({ title }) => {
         }
     };
 
+    const getSearchResults = async () => {
+        let queryUrl = "http://localhost:8080/pet?";
+        for (const field in draftSearchData) {
+            if (draftSearchData[field]) {
+                queryUrl += `${field}=${draftSearchData[field]}&`;
+            }
+        }
+        queryUrl = queryUrl.slice(0, queryUrl.length - 1);
+        const res = await axios.get(queryUrl);
+        setSearchResults([...res.data]);
+    };
+
     const handleSubmit = e => {
         e.preventDefault();
         setSearchResults([]);
         try {
             setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
             setAlertVariant({ ...alertVariant, searchForm: "success" });
-            const petKeys = Object.keys(localStorage).filter(
-                key => !key.includes("@")
-            );
-            if (petKeys.length === 0) throw new Error("noResults");
-            const pets = [];
-            petKeys.forEach(key =>
-                pets.push(JSON.parse(localStorage.getItem(key)))
-            );
-            setSearchResults(pets.filter(pet => pet.type === type));
+            getSearchResults();
         } catch (err) {
             setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
             setAlertVariant({ ...alertVariant, searchForm: "danger" });
@@ -101,12 +111,17 @@ const Search = ({ title }) => {
         }
     };
 
+    const handleReset = () => {
+        setDraftSearchData(draftSearchDataSchema);
+    };
+
     return (
         <div id="search" className="d-flex">
             <div id="search-form-container">
                 <PageBasedForm
                     isSearchForm={true}
                     onSubmit={handleSubmit}
+                    handleReset={handleReset}
                     headerTitle="Search Pets"
                     btnSubmitText="Search"
                     isAdvancedSearch={isAdvancedSearch}
@@ -118,6 +133,7 @@ const Search = ({ title }) => {
                     <SearchFormBodyTemplate
                         isAdvancedSearch={isAdvancedSearch}
                         handleChange={handleChange}
+                        type={type}
                         status={status}
                         name={name}
                         height={height}
@@ -127,15 +143,37 @@ const Search = ({ title }) => {
             </div>
             <div className="d-flex flex-wrap" id="search-results-container">
                 {searchResults.length > 0 ? (
-                    searchResults.map(result => (
-                        <PetCard
-                            key={result.id}
-                            id={result.id}
-                            type={result.type}
-                            name={result.name}
-                            status={result.status}
-                        />
-                    ))
+                    searchResults.map(result => {
+                        const {
+                            id,
+                            type,
+                            name,
+                            status,
+                            photo,
+                            height,
+                            weight,
+                            color,
+                            bio,
+                            hypoallergenic,
+                            dietRestrict,
+                        } = result;
+                        return (
+                            <PetCard
+                                key={id}
+                                id={id}
+                                type={type}
+                                name={name}
+                                status={status}
+                                photo={photo}
+                                height={height}
+                                weight={weight}
+                                color={color}
+                                bio={bio}
+                                hypoallergenic={hypoallergenic}
+                                dietRestrict={dietRestrict}
+                            />
+                        );
+                    })
                 ) : (
                     <div
                         className="d-flex justify-content-center align-items-center"

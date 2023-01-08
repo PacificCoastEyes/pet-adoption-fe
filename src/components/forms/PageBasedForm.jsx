@@ -8,6 +8,7 @@ const PageBasedForm = ({
     onSubmit,
     headerTitle,
     children,
+    handleReset,
     btnSubmitText,
     isHiddenAlert,
     alertVariant,
@@ -29,6 +30,7 @@ const PageBasedForm = ({
                 <PageBasedFormFooter
                     btnSubmitText={btnSubmitText}
                     isHiddenAlert={isHiddenAlert}
+                    handleReset={handleReset}
                     alertVariant={alertVariant}
                     alertMsg={alertMsg}
                 />
