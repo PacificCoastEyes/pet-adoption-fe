@@ -3,7 +3,7 @@ import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import SearchFormBodyTemplate from "../components/forms/SearchFormBodyTemplate";
 import PetCard from "../components/PetCard";
-import axios from "axios";
+import { instance } from "../axiosInstance";
 import { SearchHeart } from "react-bootstrap-icons";
 import "../styles/Search.css";
 
@@ -45,12 +45,21 @@ const Search = ({ title }) => {
     }, []);
 
     useEffect(() => {
-        setAlertMsg({
-            ...alertVariant,
-            searchForm: `${searchResults.length} result${
-                searchResults.length !== 1 ? "s" : ""
-            } found`,
-        });
+        if (searchResults.length === 0) {
+            setAlertVariant({ ...alertVariant, searchForm: "danger" });
+            setAlertMsg({
+                ...alertVariant,
+                searchForm: "No results found",
+            });
+        } else {
+            setAlertVariant({ ...alertVariant, searchForm: "success" });
+            setAlertMsg({
+                ...alertMsg,
+                searchForm: `${searchResults.length} result${
+                    searchResults.length !== 1 ? "s" : ""
+                } found`,
+            });
+        }
     }, [searchResults]);
 
     const handleChange = e => {
@@ -80,34 +89,23 @@ const Search = ({ title }) => {
             }
         }
         queryUrl = queryUrl.slice(0, queryUrl.length - 1);
-        const res = await axios.get(queryUrl);
+        const res = await instance.get(queryUrl);
         setSearchResults([...res.data]);
+        setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        setSearchResults([]);
         try {
-            setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
-            setAlertVariant({ ...alertVariant, searchForm: "success" });
-            getSearchResults();
+            await getSearchResults();
         } catch (err) {
+            console.log(err);
             setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
             setAlertVariant({ ...alertVariant, searchForm: "danger" });
-            switch (err.message) {
-                case "noResults":
-                    setAlertMsg({
-                        ...alertVariant,
-                        searchForm: "No results found",
-                    });
-                    break;
-                default:
-                    setAlertMsg({
-                        ...alertVariant,
-                        searchForm: `Sorry, there was a problem with the search - ${err}`,
-                    });
-            }
-            console.log(err);
+            setAlertMsg({
+                ...alertMsg,
+                searchForm: `Sorry, there was a problem with the search - ${err}`,
+            });
         }
     };
 

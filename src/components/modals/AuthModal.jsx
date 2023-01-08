@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import LoginForm from "../forms/LoginForm";
 import SignUpForm from "../forms/SignUpForm";
 import "../../styles/AuthModal.css";
+import "../../styles/Toast.css";
 import { instance } from "../../axiosInstance";
 
 const AuthModal = ({ handleAuthModalClose }) => {
@@ -29,8 +30,8 @@ const AuthModal = ({ handleAuthModalClose }) => {
         setMsgAlertAuthError,
     } = useContext(AuthModalContext);
 
-    const [showAuthSuccessToast, setShowAuthSuccessToast] = useState(false);
-    const [textAuthSuccessToast, setTextAuthSuccessToast] = useState("");
+    const [showSuccessToast, setShowSuccessToast] = useState(false);
+    const [textSuccessToast, setTextSuccessToast] = useState("");
 
     const areAllAlertsHidden =
         isHiddenAlert.signupSuccess &&
@@ -70,8 +71,8 @@ const AuthModal = ({ handleAuthModalClose }) => {
             );
             handleAuthModalClose();
             resetAuthModal();
-            setShowAuthSuccessToast(true);
-            setTextAuthSuccessToast(
+            setShowSuccessToast(true);
+            setTextSuccessToast(
                 `Welcome to The Pet Haven, ${res.data.user.firstName}! We're so glad you signed up.`
             );
         } catch (err) {
@@ -101,8 +102,8 @@ const AuthModal = ({ handleAuthModalClose }) => {
             );
             handleAuthModalClose();
             resetAuthModal();
-            setShowAuthSuccessToast(true);
-            setTextAuthSuccessToast(
+            setShowSuccessToast(true);
+            setTextSuccessToast(
                 `Welcome back to The Pet Haven, ${res.data.user.firstName}!`
             );
         } catch (err) {
@@ -179,20 +180,17 @@ const AuthModal = ({ handleAuthModalClose }) => {
                     </Modal.Footer>
                 </Form>
             </Modal>
-            <ToastContainer
-                position="top-end"
-                id="auth-success-toast-container"
-            >
+            <ToastContainer position="top-end" className="toast-container">
                 <Toast
-                    show={showAuthSuccessToast}
-                    onClose={() => setShowAuthSuccessToast(false)}
+                    show={showSuccessToast}
+                    onClose={() => setShowSuccessToast(false)}
                     delay={6000}
                     autohide
                 >
                     <Toast.Header>
                         <strong className="me-auto">The Pet Haven</strong>
                     </Toast.Header>
-                    <Toast.Body>{textAuthSuccessToast}</Toast.Body>
+                    <Toast.Body>{textSuccessToast}</Toast.Body>
                 </Toast>
             </ToastContainer>
         </>

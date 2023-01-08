@@ -2,25 +2,6 @@
     max-width: 75%;
 }
 
-#auth-success-toast-container {
-    margin-top: 100px;
-    margin-right: 20px;
-}
-
-.toast-header {
-    color: white;
-    background-color: var(--bs-secondary);
-}
-
-@media screen and (max-width: 768px) {
-    #auth-success-toast-container {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        margin-right: 0;
-    }
-}
-
 @media screen and (max-width: 450px) {
     #alert-auth-error {
         max-width: 65%;
