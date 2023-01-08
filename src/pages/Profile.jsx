@@ -25,7 +25,7 @@ const Profile = ({ title }) => {
         // eslint-disable-next-line
     }, []);
 
-    const [draftProfileData, setDraftProfileData] = useState({
+    const draftProfileDataSchema = {
         firstName: "",
         lastName: "",
         email: "",
@@ -34,7 +34,15 @@ const Profile = ({ title }) => {
         password: "",
         confirmPassword: "",
         currentPassword: "",
-    });
+    };
+
+    const [draftProfileData, setDraftProfileData] = useState(
+        draftProfileDataSchema
+    );
+
+    const handleReset = () => {
+        setDraftProfileData(draftProfileDataSchema);
+    };
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -106,6 +114,7 @@ const Profile = ({ title }) => {
         <div className="py-4">
             <PageBasedForm
                 onSubmit={handleSubmit}
+                handleReset={handleReset}
                 headerTitle="My Profile"
                 btnSubmitText="Save"
                 isHiddenAlert={isHiddenAlert.profileForm}

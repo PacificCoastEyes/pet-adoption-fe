@@ -2,6 +2,7 @@ import { Form } from "react-bootstrap";
 
 const AddPetFormBodyTemplate = ({
     handleChange,
+    type,
     breed,
     name,
     status,
@@ -9,6 +10,7 @@ const AddPetFormBodyTemplate = ({
     weight,
     color,
     bio,
+    hypoallergenic,
     dietRestrict,
 }) => {
     return (
@@ -19,20 +21,22 @@ const AddPetFormBodyTemplate = ({
                     <Form.Check
                         inline
                         type="radio"
-                        id="cat"
+                        id="dog"
                         name="type"
                         label="Dog"
                         value="dog"
+                        checked={type === "dog" ? true : false}
                         onChange={handleChange}
                         required
                     />
                     <Form.Check
                         inline
                         type="radio"
-                        id="dog"
+                        id="cat"
                         name="type"
                         label="Cat"
                         value="cat"
+                        checked={type === "cat" ? true : false}
                         onChange={handleChange}
                         required
                     />
@@ -66,6 +70,9 @@ const AddPetFormBodyTemplate = ({
                 onChange={handleChange}
                 required
             >
+                <option value="" defaultChecked>
+                    Select
+                </option>
                 <option value="available">Available</option>
                 <option value="fostered">Fostered</option>
                 <option value="adopted">Adopted</option>
@@ -140,6 +147,7 @@ const AddPetFormBodyTemplate = ({
                         name="hypoallergenic"
                         label="Yes"
                         value={true}
+                        checked={hypoallergenic === "true" ? true : false}
                         onChange={handleChange}
                     />
                     <Form.Check
@@ -149,6 +157,7 @@ const AddPetFormBodyTemplate = ({
                         name="hypoallergenic"
                         label="No"
                         value={false}
+                        checked={hypoallergenic === "false" ? true : false}
                         onChange={handleChange}
                     />
                 </div>
