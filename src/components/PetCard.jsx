@@ -1,5 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { PetContext } from "../contexts/PetContext";
 import { instance } from "../axiosInstance";
 import { Badge, Button, Card, Toast, ToastContainer } from "react-bootstrap";
 import { BookmarkHeart } from "react-bootstrap-icons";
@@ -18,22 +19,13 @@ const PetCard = ({
     bio,
     hypoallergenic,
     dietRestrict,
+    isSaved,
 }) => {
-    const [isSaved, setIsSaved] = useState(false);
     const [showSuccessToast, setShowSuccessToast] = useState(false);
     const [textSuccessToast, setTextSuccessToast] = useState("");
 
     const { isLoggedIn, currentUser } = useContext(UserContext);
-
-    useEffect(() => {
-        const checkIfPetSaved = async () => {
-            const res = await instance.get(
-                `http://localhost:8080/pet/${id}/save?uid=${currentUser.id}`
-            );
-            if (res.data.length) setIsSaved(true);
-        };
-        checkIfPetSaved();
-    }, [currentUser.id, id]);
+    const { pets, setPets } = useContext(PetContext);
 
     const capitalize = str => {
         return str.slice(0, 1).toUpperCase() + str.slice(1, str.length);
@@ -49,7 +41,11 @@ const PetCard = ({
                 (await instance.delete(`http://localhost:8080/pet/${id}/save`, {
                     data: { uid: currentUser.id },
                 }));
-            setIsSaved(isSaved ? false : true);
+            setPets({
+                ...pets,
+                [id]: { ...pets[id], isSaved: isSaved ? false : true },
+            });
+            console.log(pets);
             setShowSuccessToast(true);
             setTextSuccessToast(
                 `${name} has been ${
