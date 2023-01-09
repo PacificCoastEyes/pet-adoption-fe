@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
+import { PetContext } from "../contexts/PetContext";
+import { UserContext } from "../contexts/UserContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import SearchFormBodyTemplate from "../components/forms/SearchFormBodyTemplate";
 import PetCard from "../components/PetCard";
@@ -18,6 +20,9 @@ const Search = ({ title }) => {
         resetAlertPageBasedForm,
     } = useContext(PageBasedFormContext);
 
+    const { pets, setPets } = useContext(PetContext);
+    const { currentUser } = useContext(UserContext);
+
     const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
     const draftSearchDataSchema = {
@@ -35,17 +40,16 @@ const Search = ({ title }) => {
 
     const { type, name, status, height, weight } = draftSearchData;
 
-    const [searchResults, setSearchResults] = useState([]);
-
     useEffect(() => {
         /* eslint-enable */
         document.title = title;
         resetAlertPageBasedForm("searchForm");
+        setPets({});
         /* eslint-disable */
     }, []);
 
     useEffect(() => {
-        if (searchResults.length === 0) {
+        if (Object.keys(pets).length === 0) {
             setAlertVariant({ ...alertVariant, searchForm: "danger" });
             setAlertMsg({
                 ...alertVariant,
@@ -55,12 +59,12 @@ const Search = ({ title }) => {
             setAlertVariant({ ...alertVariant, searchForm: "success" });
             setAlertMsg({
                 ...alertMsg,
-                searchForm: `${searchResults.length} result${
-                    searchResults.length !== 1 ? "s" : ""
+                searchForm: `${Object.keys(pets).length} result${
+                    Object.keys(pets).length !== 1 ? "s" : ""
                 } found`,
             });
         }
-    }, [searchResults]);
+    }, [pets]);
 
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {
@@ -81,6 +85,19 @@ const Search = ({ title }) => {
         }
     };
 
+    const checkIfPetSaved = async petsObj => {
+        for (const id in petsObj) {
+            const res = await instance.get(
+                `http://localhost:8080/pet/${id}/save?uid=${currentUser.id}`
+            );
+            petsObj[id] = {
+                ...petsObj[id],
+                isSaved: res.data.length ? true : false,
+            };
+        }
+        return petsObj;
+    };
+
     const getSearchResults = async () => {
         let queryUrl = "http://localhost:8080/pet?";
         for (const field in draftSearchData) {
@@ -90,7 +107,12 @@ const Search = ({ title }) => {
         }
         queryUrl = queryUrl.slice(0, queryUrl.length - 1);
         const res = await instance.get(queryUrl);
-        setSearchResults([...res.data]);
+        let petsObj = {};
+        for (const pet of res.data) {
+            petsObj[pet.id] = { ...pet };
+        }
+        petsObj = await checkIfPetSaved(petsObj);
+        setPets(petsObj);
         setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
     };
 
@@ -104,7 +126,7 @@ const Search = ({ title }) => {
             setAlertVariant({ ...alertVariant, searchForm: "danger" });
             setAlertMsg({
                 ...alertMsg,
-                searchForm: `Sorry, there was a problem with the search - ${err}`,
+                searchForm: `Sorry, there was a problem getting search results. ${err}`,
             });
         }
     };
@@ -140,8 +162,8 @@ const Search = ({ title }) => {
                 </PageBasedForm>
             </div>
             <div className="d-flex flex-wrap" id="search-results-container">
-                {searchResults.length > 0 ? (
-                    searchResults.map(result => {
+                {Object.keys(pets).length > 0 ? (
+                    Object.values(pets).map(item => {
                         const {
                             id,
                             type,
@@ -154,7 +176,8 @@ const Search = ({ title }) => {
                             bio,
                             hypoallergenic,
                             dietRestrict,
-                        } = result;
+                            isSaved,
+                        } = item;
                         return (
                             <PetCard
                                 key={id}
@@ -169,6 +192,7 @@ const Search = ({ title }) => {
                                 bio={bio}
                                 hypoallergenic={hypoallergenic}
                                 dietRestrict={dietRestrict}
+                                isSaved={isSaved}
                             />
                         );
                     })
