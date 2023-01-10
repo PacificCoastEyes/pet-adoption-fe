@@ -1,14 +1,26 @@
 .pet-card {
     min-width: 250px;
     margin: 12px;
-    background-color: #ddd;
+    background-color: #fff;
     box-shadow: 0 0 10px 2px #bbb;
+}
+
+.pet-card-body:hover {
+    cursor: pointer;
+}
+
+.pet-card:hover {
+    box-shadow: 0 0 10px 2px #999;
+}
+
+.pet-card-body-end {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.175);
 }
 
 .pet-card img {
     max-width: 300px;
     max-height: 250px;
-    border-radius: 5px;
 }
 
 .badge {
@@ -38,7 +50,6 @@
 .btn-see-more {
     width: 100%;
 }
-
 
 @media screen and (max-width: 768px) {
     .pet-card {

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Menu from "../components/Menu";
 import UserContextProvider from "../contexts/UserContext";
+import PetContextProvider from "../contexts/PetContext";
 import AuthModalContextProvider from "../contexts/AuthModalContext";
 import PageBasedFormContextProvider from "../contexts/PageBasedFormContext";
 import Home from "./Home";
@@ -8,7 +9,6 @@ import Profile from "./Profile";
 import AddPet from "./AddPet";
 import Search from "./Search";
 import PrivateRoute from "./PrivateRoute";
-import PetContextProvider from "../contexts/PetContext";
 
 function App() {
     return (

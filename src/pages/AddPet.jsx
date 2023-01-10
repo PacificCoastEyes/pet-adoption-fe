@@ -93,13 +93,13 @@ const AddPet = ({ title }) => {
             setAlertMsg({ ...isHiddenAlert, addPetForm: "Pet added!" });
             handleReset();
         } catch (err) {
+            console.log(err);
             setIsHiddenAlert({ ...isHiddenAlert, addPetForm: false });
             setAlertVariant({ ...isHiddenAlert, addPetForm: "danger" });
             setAlertMsg({
                 ...isHiddenAlert,
-                addPetForm: `Sorry, there was a problem adding the pet - ${err}`,
+                addPetForm: `Sorry, there was a problem adding the pet - ${err.response.data}`,
             });
-            console.log(err);
         }
     };
 
