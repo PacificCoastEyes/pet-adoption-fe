@@ -69,14 +69,16 @@ const PetDetails = ({
                         {capitalize(type)}
                     </Badge>
                 </div>
-                <Button
-                    variant={isSaved ? "dark" : "secondary"}
-                    onClick={() => toggleSavePet()}
-                    className="d-flex justify-content-between align-items-center"
-                >
-                    <BookmarkHeart className="me-2" />
-                    {isSaved ? "Unsave" : "Save"}
-                </Button>
+                {isLoggedIn && (
+                    <Button
+                        variant={isSaved ? "dark" : "secondary"}
+                        onClick={() => toggleSavePet()}
+                        className="d-flex justify-content-between align-items-center"
+                    >
+                        <BookmarkHeart className="me-2" />
+                        {isSaved ? "Unsave" : "Save"}
+                    </Button>
+                )}
             </Card.Header>
             <Card.Body className="d-flex justify-content-center px-4">
                 <img src={photo} alt={name} />

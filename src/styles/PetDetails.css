@@ -1,6 +1,7 @@
 #pet-details-card {
     min-width: fit-content;
     max-width: 50%;
+    box-shadow: 0 0 10px 2px #bbb;
 }
 
 #pet-details-card .card-content {
