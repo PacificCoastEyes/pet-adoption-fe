@@ -1,23 +1,24 @@
-#pet-details-modal {
+#pet-details-card {
     min-width: fit-content;
+    max-width: 50%;
 }
 
-#pet-details-modal .modal-content {
+#pet-details-card .card-content {
     background-color: white;
     color: black;
 }
 
-#pet-details-modal img {
+#pet-details-card img {
     max-height: 300px;
     border-radius: 10px;
 }
 
-#pet-details-modal .modal-header,
-#pet-details-modal .modal-footer {
+#pet-details-card .card-header,
+#pet-details-card .card-footer {
     background-color: rgba(0, 0, 0, 0.03);
 }
 
-#pet-details-modal .btn-close {
+#pet-details-card .btn-close {
     background-color: var(--bs-secondary);
 }
 
@@ -54,19 +55,19 @@
 }
 
 @media screen and (max-width: 768px) {
-    .modal {
+    .card {
         padding-left: 0 !important;
     }
 
-    #pet-details-modal .modal-content {
+    #pet-details-card .card-content {
         width: 100%;
     }
 
-    #pet-details-modal img {
+    #pet-details-card img {
         max-width: 100%;
     }
 
-    #pet-details-modal .modal-body {
+    #pet-details-card .card-body {
         flex-direction: column;
         align-items: center;
     }

@@ -1,24 +1,22 @@
 import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
-import { PetContext } from "../../contexts/PetContext";
-import { instance } from "../../axiosInstance";
-import { Badge, Button, Modal, Table } from "react-bootstrap";
+import { UserContext } from "../contexts/UserContext";
+import { PetContext } from "../contexts/PetContext";
+import { instance } from "../axiosInstance";
+import { Badge, Button, Card, Table } from "react-bootstrap";
 import {
     ArrowCounterclockwise,
     BookmarkHeart,
     CalendarWeek,
     HouseHeart,
 } from "react-bootstrap-icons";
-import "../../styles/PetDetailsModal.css";
+import "../styles/PetDetails.css";
+import capitalize from "../utilities/capitalize";
 
-const PetDetailsModal = ({
-    showPetDetailsModal,
-    setShowPetDetailsModal,
+const PetDetails = ({
     toggleSavePet,
     isSaved,
     setShowPetToast,
     setTextPetToast,
-    capitalize,
     id,
     type,
     breed,
@@ -63,18 +61,24 @@ const PetDetailsModal = ({
     };
 
     return (
-        <Modal
-            show={showPetDetailsModal}
-            onHide={() => setShowPetDetailsModal(false)}
-            id="pet-details-modal"
-        >
-            <Modal.Header closeButton>
-                <h2 className="m-0">{name}</h2>
-                <Badge pill className={`badge-type-${type} ms-3`}>
-                    {capitalize(type)}
-                </Badge>
-            </Modal.Header>
-            <Modal.Body className="d-flex justify-content-center px-4">
+        <Card id="pet-details-card" className="m-4">
+            <Card.Header className="d-flex justify-content-between align-items-center p-3">
+                <div className="d-flex align-items-center">
+                    <h2 className="m-0">{name}</h2>
+                    <Badge pill className={`badge-type-${type} ms-3`}>
+                        {capitalize(type)}
+                    </Badge>
+                </div>
+                <Button
+                    variant={isSaved ? "dark" : "secondary"}
+                    onClick={() => toggleSavePet()}
+                    className="d-flex justify-content-between align-items-center"
+                >
+                    <BookmarkHeart className="me-2" />
+                    {isSaved ? "Unsave" : "Save"}
+                </Button>
+            </Card.Header>
+            <Card.Body className="d-flex justify-content-center px-4">
                 <img src={photo} alt={name} />
                 <Table striped borderless id="pet-details-table">
                     <tbody>
@@ -130,17 +134,9 @@ const PetDetailsModal = ({
                         )}
                     </tbody>
                 </Table>
-            </Modal.Body>
+            </Card.Body>
             {isLoggedIn && (
-                <Modal.Footer>
-                    <Button
-                        variant={isSaved ? "dark" : "secondary"}
-                        onClick={() => toggleSavePet()}
-                        className="d-flex justify-content-between align-items-center"
-                    >
-                        <BookmarkHeart className="me-2" />
-                        {isSaved ? "Unsave" : "Save"}
-                    </Button>
+                <Card.Footer className="d-flex justify-content-around align-items-center p-3">
                     {status !== "fostered" && (
                         <Button
                             variant="warning"
@@ -171,10 +167,10 @@ const PetDetailsModal = ({
                             Return
                         </Button>
                     )}
-                </Modal.Footer>
+                </Card.Footer>
             )}
-        </Modal>
+        </Card>
     );
 };
 
-export default PetDetailsModal;
+export default PetDetails;
