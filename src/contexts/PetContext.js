@@ -6,9 +6,17 @@ const PetContextProvider = ({ children }) => {
     const [searchResults, setSearchResults] = useState({});
     // const [likedPets, setLikedPets] = useState({});
     // const [ownedPets, setOwnedPets] = useState({});
+    const [petDetailsReferrer, setPetDetailsReferrer] = useState("");
 
     return (
-        <PetContext.Provider value={{ searchResults, setSearchResults }}>
+        <PetContext.Provider
+            value={{
+                searchResults,
+                setSearchResults,
+                petDetailsReferrer,
+                setPetDetailsReferrer,
+            }}
+        >
             {children}
         </PetContext.Provider>
     );

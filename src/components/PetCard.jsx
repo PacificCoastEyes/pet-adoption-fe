@@ -3,7 +3,7 @@ import { UserContext } from "../contexts/UserContext";
 import { PetContext } from "../contexts/PetContext";
 import { instance } from "../axiosInstance";
 import { Link } from "react-router-dom";
-import { Badge, Button, Card, Toast, ToastContainer } from "react-bootstrap";
+import { Badge, Button, Card } from "react-bootstrap";
 import { BookmarkHeart, PersonFill } from "react-bootstrap-icons";
 import "../styles/PetCard.css";
 import "../styles/Toast.css";
@@ -14,7 +14,8 @@ const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
     const [textPetSavedToast, setTextPetSavedToast] = useState("");
 
     const { isLoggedIn, currentUser } = useContext(UserContext);
-    const { searchResults, setSearchResults } = useContext(PetContext);
+    const { searchResults, setSearchResults, setPetDetailsReferrer } =
+        useContext(PetContext);
 
     const toggleSavePet = async () => {
         try {
@@ -61,7 +62,10 @@ const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
                     )}
                 </Card.Header>
                 <Card.Body className="pet-card-body p-0">
-                    <Link to={`/pet?id=${id}`}>
+                    <Link
+                        to={`/pet?id=${id}`}
+                        onClick={() => setPetDetailsReferrer("search")}
+                    >
                         <div className="d-flex flex-column justify-content-between h-100">
                             <img
                                 src={photo}
@@ -88,19 +92,6 @@ const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
                     </Link>
                 </Card.Body>
             </Card>
-            <ToastContainer position="top-end" className="toast-container">
-                <Toast
-                    show={showPetSavedToast}
-                    onClose={() => setShowPetSavedToast(false)}
-                    delay={6000}
-                    autohide
-                >
-                    <Toast.Header>
-                        <strong className="me-auto">The Pet Haven</strong>
-                    </Toast.Header>
-                    <Toast.Body>{textPetSavedToast}</Toast.Body>
-                </Toast>
-            </ToastContainer>
         </>
     );
 };
