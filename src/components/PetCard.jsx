@@ -3,13 +3,16 @@ import { UserContext } from "../contexts/UserContext";
 import { PetContext } from "../contexts/PetContext";
 import { instance } from "../axiosInstance";
 import { Badge, Button, Card, Toast, ToastContainer } from "react-bootstrap";
-import { BookmarkHeart } from "react-bootstrap-icons";
+import PetDetailsModal from "./modals/PetDetailsModal";
+import { BookmarkHeart, PersonFill } from "react-bootstrap-icons";
 import "../styles/PetCard.css";
 import "../styles/Toast.css";
 
 const PetCard = ({
     id,
+    uid,
     type,
+    breed,
     name,
     status,
     photo,
@@ -21,8 +24,9 @@ const PetCard = ({
     dietRestrict,
     isSaved,
 }) => {
-    const [showSuccessToast, setShowSuccessToast] = useState(false);
-    const [textSuccessToast, setTextSuccessToast] = useState("");
+    const [showPetToast, setShowPetToast] = useState(false);
+    const [textPetToast, setTextPetToast] = useState("");
+    const [showPetDetailsModal, setShowPetDetailsModal] = useState(false);
 
     const { isLoggedIn, currentUser } = useContext(UserContext);
     const { pets, setPets } = useContext(PetContext);
@@ -34,44 +38,39 @@ const PetCard = ({
     const toggleSavePet = async () => {
         try {
             !isSaved &&
-                (await instance.post(`http://localhost:8080/pet/${id}/save`, {
-                    uid: currentUser.id,
-                }));
+                (await instance.post(`http://localhost:8080/pet/${id}/save`));
             isSaved &&
-                (await instance.delete(`http://localhost:8080/pet/${id}/save`, {
-                    data: { uid: currentUser.id },
-                }));
+                (await instance.delete(`http://localhost:8080/pet/${id}/save`));
             setPets({
                 ...pets,
                 [id]: { ...pets[id], isSaved: isSaved ? false : true },
             });
-            console.log(pets);
-            setShowSuccessToast(true);
-            setTextSuccessToast(
+            setTextPetToast(
                 `${name} has been ${
-                    isSaved ? "remvoved from" : "added to"
+                    isSaved ? "removed from" : "added to"
                 } your saved pets.`
             );
         } catch (err) {
-            setShowSuccessToast(true);
-            setTextSuccessToast(
+            setTextPetToast(
                 `Sorry, we ran into a problem ${
                     isSaved ? "removing" : "adding"
                 } ${name} ${isSaved ? "from" : "to"} your saved pets.`
             );
+        } finally {
+            setShowPetToast(true);
         }
     };
 
     return (
         <>
             <Card className="pet-card">
-                <Card.Header className="d-flex justify-content-between align-items-center p-2">
+                <Card.Header className="d-flex justify-content-between align-items-center ps-3 pe-2 py-2">
                     <Badge pill className={`badge-type-${type}`}>
                         {capitalize(type)}
                     </Badge>
                     {isLoggedIn && (
                         <Button
-                            variant={isSaved ? "light" : "secondary"}
+                            variant={isSaved ? "dark" : "secondary"}
                             onClick={() => toggleSavePet()}
                             className="d-flex justify-content-between align-items-center"
                         >
@@ -80,32 +79,62 @@ const PetCard = ({
                         </Button>
                     )}
                 </Card.Header>
-                <Card.Body className="d-flex flex-column justify-content-between p-2">
-                    <img src={photo} alt={name} className="align-self-center" />
-                    <div className="d-flex justify-content-between align-items-center mt-2 px-2">
-                        <Card.Title className="mt-2">{name}</Card.Title>
+                <Card.Body
+                    onClick={() => setShowPetDetailsModal(true)}
+                    className="pet-card-body d-flex flex-column justify-content-between p-0"
+                >
+                    <img
+                        src={photo}
+                        alt={name}
+                        className="align-self-center px-2 pt-2"
+                    />
+                    <div className="d-flex justify-content-between align-items-center mt-2 px-3 py-2 pet-card-body-end">
+                        <div className="d-flex align-items-center">
+                            <Card.Title className="mt-2 me-1">
+                                {name}
+                            </Card.Title>
+                            {uid === currentUser.id && (
+                                <PersonFill className="mt-1" />
+                            )}
+                        </div>
                         <Badge pill className={`badge-status-${status}`}>
                             {capitalize(status)}
                         </Badge>
                     </div>
                 </Card.Body>
-                <Card.Footer className="p-2">
-                    <Button variant="primary" className="btn-see-more">
-                        See More
-                    </Button>
-                </Card.Footer>
             </Card>
+            <PetDetailsModal
+                showPetDetailsModal={showPetDetailsModal}
+                setShowPetDetailsModal={setShowPetDetailsModal}
+                toggleSavePet={toggleSavePet}
+                isSaved={isSaved}
+                setShowPetToast={setShowPetToast}
+                setTextPetToast={setTextPetToast}
+                capitalize={capitalize}
+                id={id}
+                type={type}
+                breed={breed}
+                name={name}
+                status={status}
+                photo={photo}
+                height={height}
+                weight={weight}
+                color={color}
+                bio={bio}
+                hypoallergenic={hypoallergenic}
+                dietRestrict={dietRestrict}
+            />
             <ToastContainer position="top-end" className="toast-container">
                 <Toast
-                    show={showSuccessToast}
-                    onClose={() => setShowSuccessToast(false)}
+                    show={showPetToast}
+                    onClose={() => setShowPetToast(false)}
                     delay={6000}
                     autohide
                 >
                     <Toast.Header>
                         <strong className="me-auto">The Pet Haven</strong>
                     </Toast.Header>
-                    <Toast.Body>{textSuccessToast}</Toast.Body>
+                    <Toast.Body>{textPetToast}</Toast.Body>
                 </Toast>
             </ToastContainer>
         </>

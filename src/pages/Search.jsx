@@ -21,7 +21,7 @@ const Search = ({ title }) => {
     } = useContext(PageBasedFormContext);
 
     const { pets, setPets } = useContext(PetContext);
-    const { currentUser } = useContext(UserContext);
+    const { isLoggedIn, currentUser } = useContext(UserContext);
 
     const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
@@ -92,7 +92,7 @@ const Search = ({ title }) => {
             );
             petsObj[id] = {
                 ...petsObj[id],
-                isSaved: res.data.length ? true : false,
+                isSaved: res.data ? true : false,
             };
         }
         return petsObj;
@@ -111,7 +111,7 @@ const Search = ({ title }) => {
         for (const pet of res.data) {
             petsObj[pet.id] = { ...pet };
         }
-        petsObj = await checkIfPetSaved(petsObj);
+        if (isLoggedIn) petsObj = await checkIfPetSaved(petsObj);
         setPets(petsObj);
         setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
     };
@@ -126,7 +126,7 @@ const Search = ({ title }) => {
             setAlertVariant({ ...alertVariant, searchForm: "danger" });
             setAlertMsg({
                 ...alertMsg,
-                searchForm: `Sorry, there was a problem getting search results. ${err}`,
+                searchForm: `Sorry, there was a problem getting search results. ${err.response.data}`,
             });
         }
     };
@@ -166,7 +166,9 @@ const Search = ({ title }) => {
                     Object.values(pets).map(item => {
                         const {
                             id,
+                            uid,
                             type,
+                            breed,
                             name,
                             status,
                             photo,
@@ -182,7 +184,9 @@ const Search = ({ title }) => {
                             <PetCard
                                 key={id}
                                 id={id}
+                                uid={uid}
                                 type={type}
+                                breed={breed}
                                 name={name}
                                 status={status}
                                 photo={photo}
