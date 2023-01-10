@@ -25,6 +25,7 @@ const PageBasedFormHeader = ({
                         id="advanced-search-toggle"
                         className="advanced-search-toggle"
                         value={isAdvancedSearch}
+                        checked={isAdvancedSearch}
                         onChange={() => setIsAdvancedSearch(!isAdvancedSearch)}
                     />
                 </Form.Group>

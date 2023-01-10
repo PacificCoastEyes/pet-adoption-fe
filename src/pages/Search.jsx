@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import { PetContext } from "../contexts/PetContext";
+import { SearchContext } from "../contexts/SearchContext";
 import { UserContext } from "../contexts/UserContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
 import SearchFormBodyTemplate from "../components/forms/SearchFormBodyTemplate";
@@ -20,23 +21,15 @@ const Search = ({ title }) => {
         resetAlertPageBasedForm,
     } = useContext(PageBasedFormContext);
 
-    const { pets, setPets } = useContext(PetContext);
+    const { searchResults, setSearchResults } = useContext(PetContext);
+    const {
+        draftSearchDataSchema,
+        draftSearchData,
+        setDraftSearchData,
+        isAdvancedSearch,
+        setIsAdvancedSearch,
+    } = useContext(SearchContext);
     const { isLoggedIn, currentUser } = useContext(UserContext);
-
-    const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
-
-    const draftSearchDataSchema = {
-        type: "",
-        status: "",
-        name: "",
-        photo: "",
-        height: "",
-        weight: "",
-    };
-
-    const [draftSearchData, setDraftSearchData] = useState(
-        draftSearchDataSchema
-    );
 
     const { type, name, status, height, weight } = draftSearchData;
 
@@ -44,12 +37,11 @@ const Search = ({ title }) => {
         /* eslint-enable */
         document.title = title;
         resetAlertPageBasedForm("searchForm");
-        setPets({});
         /* eslint-disable */
     }, []);
 
     useEffect(() => {
-        if (Object.keys(pets).length === 0) {
+        if (Object.keys(searchResults).length === 0) {
             setAlertVariant({ ...alertVariant, searchForm: "danger" });
             setAlertMsg({
                 ...alertVariant,
@@ -59,12 +51,12 @@ const Search = ({ title }) => {
             setAlertVariant({ ...alertVariant, searchForm: "success" });
             setAlertMsg({
                 ...alertMsg,
-                searchForm: `${Object.keys(pets).length} result${
-                    Object.keys(pets).length !== 1 ? "s" : ""
+                searchForm: `${Object.keys(searchResults).length} result${
+                    Object.keys(searchResults).length !== 1 ? "s" : ""
                 } found`,
             });
         }
-    }, [pets]);
+    }, [searchResults]);
 
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {
@@ -112,7 +104,7 @@ const Search = ({ title }) => {
             petsObj[pet.id] = { ...pet };
         }
         if (isLoggedIn) petsObj = await checkIfPetSaved(petsObj);
-        setPets(petsObj);
+        setSearchResults(petsObj);
         setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
     };
 
@@ -162,40 +154,19 @@ const Search = ({ title }) => {
                 </PageBasedForm>
             </div>
             <div className="d-flex flex-wrap" id="search-results-container">
-                {Object.keys(pets).length > 0 ? (
-                    Object.values(pets).map(item => {
-                        const {
-                            id,
-                            uid,
-                            type,
-                            breed,
-                            name,
-                            status,
-                            photo,
-                            height,
-                            weight,
-                            color,
-                            bio,
-                            hypoallergenic,
-                            dietRestrict,
-                            isSaved,
-                        } = item;
+                {Object.keys(searchResults).length > 0 ? (
+                    Object.values(searchResults).map(item => {
+                        const { id, uid, type, name, status, photo, isSaved } =
+                            item;
                         return (
                             <PetCard
                                 key={id}
                                 id={id}
                                 uid={uid}
                                 type={type}
-                                breed={breed}
                                 name={name}
                                 status={status}
                                 photo={photo}
-                                height={height}
-                                weight={weight}
-                                color={color}
-                                bio={bio}
-                                hypoallergenic={hypoallergenic}
-                                dietRestrict={dietRestrict}
                                 isSaved={isSaved}
                             />
                         );

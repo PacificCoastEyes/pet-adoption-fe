@@ -1,0 +1,24 @@
+#pet-details-placeholder {
+    height: calc(100vh - 99px);
+    width: 100%;
+}
+
+#pet-details-placeholder svg {
+    height: 100px;
+    width: 100px;
+    fill: var(--bs-secondary);
+}
+
+@media screen and (max-width: 1000px) {
+    #pet-details-placeholder {
+        flex-direction: column;
+    }
+
+    #pet-details-placeholder svg {
+        margin-bottom: 30px;
+    }
+
+    #pet-details-placeholder h1 {
+        text-align: center;
+    }
+}

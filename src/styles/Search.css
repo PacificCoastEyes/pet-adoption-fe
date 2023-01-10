@@ -25,6 +25,11 @@
     padding: 12px;
 }
 
+#search-results-container a {
+    text-decoration: none;
+    color: initial;
+}
+
 #search-heart {
     height: calc(100vh - 99px);
     width: 100%;
