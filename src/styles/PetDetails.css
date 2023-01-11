@@ -55,6 +55,11 @@
     max-width: 200px;
 }
 
+#pet-details-card-header-left svg {
+    height: 1.75em;
+    width: 1.75em;
+}
+
 @media screen and (max-width: 768px) {
     .card {
         padding-left: 0 !important;

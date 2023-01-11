@@ -7,6 +7,7 @@ import PageBasedForm from "../components/forms/PageBasedForm";
 import SearchFormBodyTemplate from "../components/forms/SearchFormBodyTemplate";
 import PetCard from "../components/PetCard";
 import { instance } from "../axiosInstance";
+import checkIfPetSaved from "../utilities/checkIfPetSaved";
 import { SearchHeart } from "react-bootstrap-icons";
 import "../styles/Search.css";
 
@@ -18,7 +19,6 @@ const Search = ({ title }) => {
         setAlertVariant,
         alertMsg,
         setAlertMsg,
-        resetAlertPageBasedForm,
     } = useContext(PageBasedFormContext);
 
     const { searchResults, setSearchResults } = useContext(PetContext);
@@ -36,7 +36,6 @@ const Search = ({ title }) => {
     useEffect(() => {
         /* eslint-enable */
         document.title = title;
-        resetAlertPageBasedForm("searchForm");
         /* eslint-disable */
     }, []);
 
@@ -77,19 +76,6 @@ const Search = ({ title }) => {
         }
     };
 
-    const checkIfPetSaved = async petsObj => {
-        for (const id in petsObj) {
-            const res = await instance.get(
-                `http://localhost:8080/pet/${id}/save?uid=${currentUser.id}`
-            );
-            petsObj[id] = {
-                ...petsObj[id],
-                isSaved: res.data ? true : false,
-            };
-        }
-        return petsObj;
-    };
-
     const getSearchResults = async () => {
         let queryUrl = "http://localhost:8080/pet?";
         for (const field in draftSearchData) {
@@ -103,7 +89,7 @@ const Search = ({ title }) => {
         for (const pet of res.data) {
             petsObj[pet.id] = { ...pet };
         }
-        if (isLoggedIn) petsObj = await checkIfPetSaved(petsObj);
+        if (isLoggedIn) petsObj = await checkIfPetSaved(petsObj, currentUser);
         setSearchResults(petsObj);
         setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
     };
@@ -158,18 +144,7 @@ const Search = ({ title }) => {
                     Object.values(searchResults).map(item => {
                         const { id, uid, type, name, status, photo, isSaved } =
                             item;
-                        return (
-                            <PetCard
-                                key={id}
-                                id={id}
-                                uid={uid}
-                                type={type}
-                                name={name}
-                                status={status}
-                                photo={photo}
-                                isSaved={isSaved}
-                            />
-                        );
+                        return <PetCard key={id} id={id} />;
                     })
                 ) : (
                     <div

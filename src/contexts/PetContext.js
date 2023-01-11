@@ -4,6 +4,7 @@ export const PetContext = createContext();
 
 const PetContextProvider = ({ children }) => {
     const [searchResults, setSearchResults] = useState({});
+    const [petDetails, setPetDetails] = useState({});
     // const [likedPets, setLikedPets] = useState({});
     // const [ownedPets, setOwnedPets] = useState({});
     const [petDetailsReferrer, setPetDetailsReferrer] = useState("");
@@ -13,6 +14,8 @@ const PetContextProvider = ({ children }) => {
             value={{
                 searchResults,
                 setSearchResults,
+                petDetails,
+                setPetDetails,
                 petDetailsReferrer,
                 setPetDetailsReferrer,
             }}
