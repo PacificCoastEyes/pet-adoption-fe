@@ -20,8 +20,7 @@ const PetDetails = ({
     setTextPetActionToast,
 }) => {
     const { isLoggedIn, currentUser } = useContext(UserContext);
-    const { petDetails, setPetDetails, searchResults, setSearchResults } =
-        useContext(PetContext);
+    const { petDetails, setPetDetails } = useContext(PetContext);
 
     const {
         isSaved,
@@ -72,16 +71,6 @@ const PetDetails = ({
                 status: newStatus,
             },
         });
-        if (petDetailsReferrer === "search") {
-            setSearchResults({
-                ...searchResults,
-                [id]: {
-                    ...searchResults[id],
-                    uid: action === "return" ? null : uid,
-                    status: newStatus,
-                },
-            });
-        }
         if (action === "return") {
             setUserOwns(false);
         } else {
@@ -141,17 +130,6 @@ const PetDetails = ({
                                 setShowPetActionToast,
                                 setTextPetActionToast
                             );
-                            if (petDetailsReferrer === "search") {
-                                toggleSavePet(
-                                    id,
-                                    name,
-                                    isSaved,
-                                    searchResults,
-                                    setSearchResults,
-                                    setShowPetActionToast,
-                                    setTextPetActionToast
-                                );
-                            }
                         }}
                         className="d-flex justify-content-between align-items-center"
                     >

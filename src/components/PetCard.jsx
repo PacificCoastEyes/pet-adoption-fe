@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { PetContext } from "../contexts/PetContext";
 import { Link } from "react-router-dom";
@@ -19,16 +19,6 @@ const PetCard = ({ id }) => {
         useContext(PetContext);
 
     const { uid, type, name, status, photo, isSaved } = searchResults[id];
-    const [userOwns, setUserOwns] = useState(false);
-
-    useEffect(() => {
-        if (uid === currentUser.id) {
-            setUserOwns(true);
-            console.log("now owned");
-        } else {
-            setUserOwns(false);
-        }
-    }, [uid, currentUser.id]);
 
     return (
         <>
@@ -74,7 +64,7 @@ const PetCard = ({ id }) => {
                                     <Card.Title className="mt-2 me-1">
                                         {name}
                                     </Card.Title>
-                                    {userOwns && (
+                                    {uid === currentUser.id && (
                                         <PersonFill className="mt-1" />
                                     )}
                                 </div>
