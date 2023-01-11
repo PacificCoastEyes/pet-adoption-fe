@@ -1,8 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { PetContext } from "../contexts/PetContext";
 import { instance } from "../axiosInstance";
+import toggleSavePet from "../utilities/toggleSavePet";
 import { Badge, Button, Card, Table } from "react-bootstrap";
+import { PersonFill } from "react-bootstrap-icons";
 import {
     ArrowCounterclockwise,
     BookmarkHeart,
@@ -13,70 +15,150 @@ import "../styles/PetDetails.css";
 import capitalize from "../utilities/capitalize";
 
 const PetDetails = ({
-    toggleSavePet,
-    isSaved,
-    setShowPetToast,
-    setTextPetToast,
-    id,
-    type,
-    breed,
-    name,
-    status,
-    photo,
-    height,
-    weight,
-    color,
-    bio,
-    hypoallergenic,
-    dietRestrict,
+    petDetailsReferrer,
+    setShowPetActionToast,
+    setTextPetActionToast,
 }) => {
-    const { isLoggedIn } = useContext(UserContext);
-    const { pets, setPets } = useContext(PetContext);
+    const { isLoggedIn, currentUser } = useContext(UserContext);
+    const { petDetails, setPetDetails, searchResults, setSearchResults } =
+        useContext(PetContext);
+
+    const {
+        isSaved,
+        id,
+        uid,
+        type,
+        breed,
+        name,
+        status,
+        photo,
+        height,
+        weight,
+        color,
+        bio,
+        hypoallergenic,
+        dietRestrict,
+    } = petDetails[Object.keys(petDetails)[0]];
+
+    const [userOwns, setUserOwns] = useState(false);
+
+    useEffect(() => {
+        if (uid === currentUser.id) {
+            setUserOwns(true);
+        } else {
+            setUserOwns(false);
+        }
+    }, [uid, currentUser.id]);
 
     const updatePetStatus = action => {
-        setPets({
-            ...pets,
+        let newStatus;
+        switch (action) {
+            case "foster":
+                newStatus = "fostered";
+                break;
+            case "adopt":
+                newStatus = "adopted";
+                break;
+            case "return":
+                newStatus = "available";
+                break;
+            default:
+                break;
+        }
+        setPetDetails({
             [id]: {
-                ...pets[id],
-                status: action === "foster" ? "fostered" : "adopted",
+                ...petDetails[id],
+                uid: action === "return" ? null : uid,
+                status: newStatus,
             },
         });
+        if (petDetailsReferrer === "search") {
+            setSearchResults({
+                ...searchResults,
+                [id]: {
+                    ...searchResults[id],
+                    uid: action === "return" ? null : uid,
+                    status: newStatus,
+                },
+            });
+        }
+        if (action === "return") {
+            setUserOwns(false);
+        } else {
+            setUserOwns(true);
+        }
     };
 
-    const handleFosterOrAdopt = async action => {
+    const handlePetAction = async action => {
         try {
-            const success = await instance.post(
-                `http://localhost:8080/pet/${id}/adopt`,
-                { action: action }
-            );
+            let success;
+            if (action === "foster" || action === "adopt") {
+                success = await instance.post(
+                    `http://localhost:8080/pet/${id}/adopt`,
+                    { action: action }
+                );
+            } else {
+                success = await instance.post(
+                    `http://localhost:8080/pet/${id}/return`
+                );
+            }
             if (!success) throw new Error();
             updatePetStatus(action);
-            setTextPetToast(`You've ${action}ed ${name}!`);
+            setTextPetActionToast(`You've ${action}ed ${name}!`);
         } catch (err) {
             console.log(err);
-            setTextPetToast(`Sorry, ${name} could not be ${action}ed.`);
+            setTextPetActionToast(
+                `Sorry, ${name} could not be ${action}ed. ${err.response.data}`
+            );
         } finally {
-            setShowPetToast(true);
+            setShowPetActionToast(true);
         }
     };
 
     return (
-        <Card id="pet-details-card" className="m-4">
-            <Card.Header className="d-flex justify-content-between align-items-center p-3">
-                <div className="d-flex align-items-center">
+        <Card id="pet-details-card">
+            <Card.Header className="d-flex justify-content-between align-items-center ps-4 pe-3 py-3">
+                <div
+                    className="d-flex align-items-center"
+                    id="pet-details-card-header-left"
+                >
                     <h2 className="m-0">{name}</h2>
                     <Badge pill className={`badge-type-${type} ms-3`}>
                         {capitalize(type)}
                     </Badge>
+                    {userOwns && <PersonFill className="mt-1 ms-3" />}
                 </div>
-                <Button
-                    variant={isSaved ? "dark" : "secondary"}
-                    onClick={() => toggleSavePet()}
-                    className="d-flex justify-content-between align-items-center"
-                >
-                    <BookmarkHeart className="me-2" />
-                    {isSaved ? "Unsave" : "Save"}
-                </Button>
+                {isLoggedIn && (
+                    <Button
+                        variant={isSaved ? "dark" : "secondary"}
+                        onClick={() => {
+                            toggleSavePet(
+                                id,
+                                name,
+                                isSaved,
+                                petDetails,
+                                setPetDetails,
+                                setShowPetActionToast,
+                                setTextPetActionToast
+                            );
+                            if (petDetailsReferrer === "search") {
+                                toggleSavePet(
+                                    id,
+                                    name,
+                                    isSaved,
+                                    searchResults,
+                                    setSearchResults,
+                                    setShowPetActionToast,
+                                    setTextPetActionToast
+                                );
+                            }
+                        }}
+                        className="d-flex justify-content-between align-items-center"
+                    >
+                        <BookmarkHeart className="me-2" />
+                        {isSaved ? "Unsave" : "Save"}
+                    </Button>
+                )}
             </Card.Header>
             <Card.Body className="d-flex justify-content-center px-4">
                 <img src={photo} alt={name} />
@@ -137,30 +219,31 @@ const PetDetails = ({
             </Card.Body>
             {isLoggedIn && (
                 <Card.Footer className="d-flex justify-content-around align-items-center p-3">
-                    {status !== "fostered" && (
+                    {status === "available" && (
                         <Button
                             variant="warning"
-                            onClick={() => handleFosterOrAdopt("foster")}
+                            onClick={() => handlePetAction("foster")}
                             className="d-flex justify-content-between align-items-center"
                         >
                             <CalendarWeek className="me-2" />
                             Foster
                         </Button>
                     )}
-                    {status !== "adopted" && (
+                    {((status !== "adopted" && !uid) ||
+                        (status === "fostered" && uid)) && (
                         <Button
                             variant="danger"
-                            onClick={() => handleFosterOrAdopt("adopt")}
+                            onClick={() => handlePetAction("adopt")}
                             className="d-flex justify-content-between align-items-center"
                         >
                             <HouseHeart className="me-2" />
                             Adopt
                         </Button>
                     )}
-                    {(status === "fostered" || status === "adopted") && (
+                    {userOwns && (
                         <Button
                             variant="info"
-                            // onClick={() => toggleSavePet()}
+                            onClick={() => handlePetAction("return")}
                             className="d-flex justify-content-between align-items-center"
                         >
                             <ArrowCounterclockwise className="me-2" />

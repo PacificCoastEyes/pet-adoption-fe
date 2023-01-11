@@ -1,46 +1,34 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { PetContext } from "../contexts/PetContext";
-import { instance } from "../axiosInstance";
 import { Link } from "react-router-dom";
-import { Badge, Button, Card, Toast, ToastContainer } from "react-bootstrap";
+import { Badge, Button, Card } from "react-bootstrap";
 import { BookmarkHeart, PersonFill } from "react-bootstrap-icons";
 import "../styles/PetCard.css";
 import "../styles/Toast.css";
 import capitalize from "../utilities/capitalize";
+import PetActionToast from "./PetActionToast";
+import toggleSavePet from "../utilities/toggleSavePet";
 
-const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
-    const [showPetSavedToast, setShowPetSavedToast] = useState(false);
-    const [textPetSavedToast, setTextPetSavedToast] = useState("");
+const PetCard = ({ id }) => {
+    const [showPetActionToast, setShowPetActionToast] = useState(false);
+    const [textPetActionToast, setTextPetActionToast] = useState("");
 
     const { isLoggedIn, currentUser } = useContext(UserContext);
-    const { searchResults, setSearchResults } = useContext(PetContext);
+    const { searchResults, setSearchResults, setPetDetailsReferrer } =
+        useContext(PetContext);
 
-    const toggleSavePet = async () => {
-        try {
-            !isSaved &&
-                (await instance.post(`http://localhost:8080/pet/${id}/save`));
-            isSaved &&
-                (await instance.delete(`http://localhost:8080/pet/${id}/save`));
-            setSearchResults({
-                ...searchResults,
-                [id]: { ...searchResults[id], isSaved: isSaved ? false : true },
-            });
-            setTextPetSavedToast(
-                `${name} has been ${
-                    isSaved ? "removed from" : "added to"
-                } your saved pets.`
-            );
-        } catch (err) {
-            setTextPetSavedToast(
-                `Sorry, we ran into a problem ${
-                    isSaved ? "removing" : "adding"
-                } ${name} ${isSaved ? "from" : "to"} your saved pets.`
-            );
-        } finally {
-            setShowPetSavedToast(true);
+    const { uid, type, name, status, photo, isSaved } = searchResults[id];
+    const [userOwns, setUserOwns] = useState(false);
+
+    useEffect(() => {
+        if (uid === currentUser.id) {
+            setUserOwns(true);
+            console.log("now owned");
+        } else {
+            setUserOwns(false);
         }
-    };
+    }, [uid, currentUser.id]);
 
     return (
         <>
@@ -52,7 +40,17 @@ const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
                     {isLoggedIn && (
                         <Button
                             variant={isSaved ? "dark" : "secondary"}
-                            onClick={() => toggleSavePet()}
+                            onClick={() =>
+                                toggleSavePet(
+                                    id,
+                                    name,
+                                    isSaved,
+                                    searchResults,
+                                    setSearchResults,
+                                    setShowPetActionToast,
+                                    setTextPetActionToast
+                                )
+                            }
                             className="d-flex justify-content-between align-items-center"
                         >
                             <BookmarkHeart className="me-2" />
@@ -61,7 +59,10 @@ const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
                     )}
                 </Card.Header>
                 <Card.Body className="pet-card-body p-0">
-                    <Link to={`/pet?id=${id}`}>
+                    <Link
+                        to={`/pet?id=${id}`}
+                        onClick={() => setPetDetailsReferrer("search")}
+                    >
                         <div className="d-flex flex-column justify-content-between h-100">
                             <img
                                 src={photo}
@@ -73,7 +74,7 @@ const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
                                     <Card.Title className="mt-2 me-1">
                                         {name}
                                     </Card.Title>
-                                    {uid === currentUser.id && (
+                                    {userOwns && (
                                         <PersonFill className="mt-1" />
                                     )}
                                 </div>
@@ -88,19 +89,11 @@ const PetCard = ({ id, uid, type, name, status, photo, isSaved }) => {
                     </Link>
                 </Card.Body>
             </Card>
-            <ToastContainer position="top-end" className="toast-container">
-                <Toast
-                    show={showPetSavedToast}
-                    onClose={() => setShowPetSavedToast(false)}
-                    delay={6000}
-                    autohide
-                >
-                    <Toast.Header>
-                        <strong className="me-auto">The Pet Haven</strong>
-                    </Toast.Header>
-                    <Toast.Body>{textPetSavedToast}</Toast.Body>
-                </Toast>
-            </ToastContainer>
+            <PetActionToast
+                showPetActionToast={showPetActionToast}
+                setShowPetActionToast={setShowPetActionToast}
+                textPetActionToast={textPetActionToast}
+            />
         </>
     );
 };

@@ -1,28 +1,24 @@
 import { instance } from "../axiosInstance";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { PetContext } from "../contexts/PetContext";
+import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
+import checkIfPetSaved from "../utilities/checkIfPetSaved";
 import PetDetails from "../components/PetDetails";
-import { InfoCircleFill } from "react-bootstrap-icons";
+import PetActionToast from "../components/PetActionToast";
+import { ArrowLeft, InfoCircleFill } from "react-bootstrap-icons";
+import { Button } from "react-bootstrap";
 import "../styles/Pet.css";
 
 const Pet = ({ title }) => {
-    const [petDetails, setPetDetails] = useState({});
+    const [showPetActionToast, setShowPetActionToast] = useState(false);
+    const [textPetActionToast, setTextPetActionToast] = useState("");
     const [petNotFound, setPetNotFound] = useState(false);
 
-    const {
-        id,
-        uid,
-        type,
-        breed,
-        name,
-        status,
-        photo,
-        height,
-        weight,
-        color,
-        bio,
-        hypoallergenic,
-        dietRestrict,
-    } = petDetails;
+    const { petDetails, setPetDetails, petDetailsReferrer } =
+        useContext(PetContext);
+    const { isLoggedIn, currentUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPetDetails = async id => {
@@ -30,7 +26,13 @@ const Pet = ({ title }) => {
                 const { data } = await instance.get(
                     `http://localhost:8080/pet/${id}`
                 );
-                setPetDetails(data);
+                if (isLoggedIn) {
+                    let petObj = {};
+                    petObj = await checkIfPetSaved({ [id]: data }, currentUser);
+                    setPetDetails(petObj);
+                } else {
+                    setPetDetails({ [id]: data });
+                }
             } catch (err) {
                 console.log(err);
                 setPetNotFound(true);
@@ -40,40 +42,55 @@ const Pet = ({ title }) => {
         document.title = title;
         const params = new URL(document.location).searchParams;
         const id = params.get("id");
-        if (id) fetchPetDetails(id);
-        // eslint-disable-next-line
-    }, []);
+        if (id) {
+            fetchPetDetails(id);
+            // const interval = setInterval(() => fetchPetDetails(id), 5000);
+            // return () => clearInterval(interval);
+        }
+    }, [currentUser, isLoggedIn, setPetDetails, title]);
     return Object.keys(petDetails).length ? (
-        <div className="d-flex justify-content-center">
-            <PetDetails
-                isSaved={uid}
-                id={id}
-                uid={uid}
-                type={type}
-                breed={breed}
-                name={name}
-                status={status}
-                photo={photo}
-                height={height}
-                weight={weight}
-                color={color}
-                bio={bio}
-                hypoallergenic={hypoallergenic}
-                dietRestrict={dietRestrict}
+        <>
+            <div className="d-flex flex-column justify-content-center align-items-center px-3 py-4">
+                <div>
+                    {petDetailsReferrer && (
+                        <Button
+                            variant="secondary"
+                            className="mb-3"
+                            id="back-button"
+                            onClick={() => navigate("/search")}
+                        >
+                            <ArrowLeft className="me-2" />
+                            {petDetailsReferrer === "search" &&
+                                "Search Results"}
+                        </Button>
+                    )}
+                    <PetDetails
+                        petDetailsReferrer={petDetailsReferrer}
+                        setShowPetActionToast={setShowPetActionToast}
+                        setTextPetActionToast={setTextPetActionToast}
+                    />
+                </div>
+            </div>
+            <PetActionToast
+                showPetActionToast={showPetActionToast}
+                setShowPetActionToast={setShowPetActionToast}
+                textPetActionToast={textPetActionToast}
             />
-        </div>
+        </>
     ) : (
-        <div
-            className="d-flex justify-content-center align-items-center"
-            id="pet-details-placeholder"
-        >
-            <InfoCircleFill />
-            <h1 className="ms-4 mb-0">
-                {petNotFound
-                    ? "404 Pet Not Found"
-                    : "Pet details will appear here"}
-            </h1>
-        </div>
+        petNotFound && (
+            <div
+                className="d-flex justify-content-center align-items-center"
+                id="pet-details-placeholder"
+            >
+                <InfoCircleFill />
+                <h1 className="ms-4 mb-0">
+                    {petNotFound
+                        ? "404 Pet Not Found"
+                        : "Pet details will appear here"}
+                </h1>
+            </div>
+        )
     );
 };
 
