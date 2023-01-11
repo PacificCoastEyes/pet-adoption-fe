@@ -57,6 +57,10 @@ const Search = ({ title }) => {
         }
     }, [searchResults]);
 
+    useEffect(() => {
+        handleSubmit();
+    }, [draftSearchData]);
+
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {
             setDraftSearchData({ ...draftSearchData, type: e.target.value });
@@ -94,8 +98,7 @@ const Search = ({ title }) => {
         setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
     };
 
-    const handleSubmit = async e => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         try {
             await getSearchResults();
         } catch (err) {
@@ -121,7 +124,6 @@ const Search = ({ title }) => {
                     onSubmit={handleSubmit}
                     handleReset={handleReset}
                     headerTitle="Search Pets"
-                    btnSubmitText="Search"
                     isAdvancedSearch={isAdvancedSearch}
                     setIsAdvancedSearch={setIsAdvancedSearch}
                     isHiddenAlert={isHiddenAlert.searchForm}
