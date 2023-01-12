@@ -1,0 +1,70 @@
+#my-pets {
+    width: 80%;
+    margin: 40px auto 20px;
+}
+
+#my-pets a {
+    text-decoration: none;
+    color: initial;
+}
+
+#my-pets-header {
+    padding: 15px 20px;
+    background-color: var(--bs-secondary);
+    color: white;
+    border-radius: 10px;
+}
+
+#my-pets-header h2 {
+    margin-bottom: 0;
+}
+
+#my-pets-toggle {
+    margin-top: 5px;
+}
+
+#my-pets-placeholder {
+    height: calc(100vh - 99px);
+    width: 100%;
+}
+
+#my-pets-placeholder svg {
+    height: 200px;
+    width: 200px;
+    fill: var(--bs-secondary);
+}
+
+#bookmark-heart svg,
+#calendar-week svg {
+    height: 125px;
+    width: 125px;
+}
+
+#house-heart svg {
+    height: 140px;
+    width: 140px;
+}
+
+@media screen and (max-width: 768px) {
+    #my-pets {
+        margin-top: 20px;
+        width: 95%;
+    }
+
+    #my-pets-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #my-pets-header h2 {
+        margin-bottom: 10px;
+    }
+
+    #my-pets-placeholder {
+        flex-direction: column;
+        text-align: center;
+    }
+    #my-pets-placeholder h1 {
+        margin-top: 10px;
+    }
+}

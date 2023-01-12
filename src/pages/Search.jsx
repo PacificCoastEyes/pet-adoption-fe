@@ -144,9 +144,8 @@ const Search = ({ title }) => {
             <div className="d-flex flex-wrap" id="search-results-container">
                 {Object.keys(searchResults).length > 0 ? (
                     Object.values(searchResults).map(item => {
-                        const { id, uid, type, name, status, photo, isSaved } =
-                            item;
-                        return <PetCard key={id} id={id} />;
+                        const { id } = item;
+                        return <PetCard key={id} id={id} referrer="search" />;
                     })
                 ) : (
                     <div

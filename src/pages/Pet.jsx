@@ -57,11 +57,18 @@ const Pet = ({ title }) => {
                             variant="secondary"
                             className="mb-3"
                             id="back-button"
-                            onClick={() => navigate("/search")}
+                            onClick={() =>
+                                navigate(
+                                    petDetailsReferrer === "search"
+                                        ? "/search"
+                                        : "/mypets"
+                                )
+                            }
                         >
                             <ArrowLeft className="me-2" />
-                            {petDetailsReferrer === "search" &&
-                                "Search Results"}
+                            {petDetailsReferrer === "search"
+                                ? "Back to Search Results"
+                                : "Back to My Pets"}
                         </Button>
                     )}
                     <PetDetails
