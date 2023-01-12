@@ -14,11 +14,7 @@ import {
 import "../styles/PetDetails.css";
 import capitalize from "../utilities/capitalize";
 
-const PetDetails = ({
-    petDetailsReferrer,
-    setShowPetActionToast,
-    setTextPetActionToast,
-}) => {
+const PetDetails = ({ setShowPetActionToast, setTextPetActionToast }) => {
     const { isLoggedIn, currentUser } = useContext(UserContext);
     const { petDetails, setPetDetails } = useContext(PetContext);
 

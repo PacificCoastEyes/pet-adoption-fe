@@ -18,6 +18,7 @@ export default async function toggleSavePet(
             ...petState,
             [id]: { ...petState[id], isSaved: isSaved ? false : true },
         });
+
         setTextPetActionToast(
             `${name} has been ${
                 isSaved ? "removed from" : "added to"

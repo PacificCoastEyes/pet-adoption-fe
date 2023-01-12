@@ -10,15 +10,39 @@ import capitalize from "../utilities/capitalize";
 import PetActionToast from "./PetActionToast";
 import toggleSavePet from "../utilities/toggleSavePet";
 
-const PetCard = ({ id }) => {
+const PetCard = ({ id, referrer }) => {
     const [showPetActionToast, setShowPetActionToast] = useState(false);
     const [textPetActionToast, setTextPetActionToast] = useState("");
 
     const { isLoggedIn, currentUser } = useContext(UserContext);
-    const { searchResults, setSearchResults, setPetDetailsReferrer } =
-        useContext(PetContext);
+    const {
+        searchResults,
+        setSearchResults,
+        setPetDetailsReferrer,
+        likedPets,
+        ownedPets,
+    } = useContext(PetContext);
 
-    const { uid, type, name, status, photo, isSaved } = searchResults[id];
+    let item;
+    let petState;
+    let setPetState;
+    switch (referrer) {
+        case "search":
+            item = searchResults[id];
+            petState = searchResults;
+            setPetState = setSearchResults;
+            break;
+        case "owned":
+            item = ownedPets[id];
+            break;
+        case "liked":
+            item = likedPets[id];
+            break;
+        default:
+            break;
+    }
+
+    const { uid, type, name, status, photo, isSaved } = item;
 
     return (
         <>
@@ -27,20 +51,20 @@ const PetCard = ({ id }) => {
                     <Badge pill className={`badge-type-${type}`}>
                         {capitalize(type)}
                     </Badge>
-                    {isLoggedIn && (
+                    {isLoggedIn && referrer === "search" && (
                         <Button
                             variant={isSaved ? "dark" : "secondary"}
-                            onClick={() =>
+                            onClick={() => {
                                 toggleSavePet(
                                     id,
                                     name,
                                     isSaved,
-                                    searchResults,
-                                    setSearchResults,
+                                    petState,
+                                    setPetState,
                                     setShowPetActionToast,
                                     setTextPetActionToast
-                                )
-                            }
+                                );
+                            }}
                             className="d-flex justify-content-between align-items-center"
                         >
                             <BookmarkHeart className="me-2" />
@@ -51,7 +75,7 @@ const PetCard = ({ id }) => {
                 <Card.Body className="pet-card-body p-0">
                     <Link
                         to={`/pet?id=${id}`}
-                        onClick={() => setPetDetailsReferrer("search")}
+                        onClick={() => setPetDetailsReferrer(referrer)}
                     >
                         <div className="d-flex flex-column justify-content-between h-100">
                             <img
