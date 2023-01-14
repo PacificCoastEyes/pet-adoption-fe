@@ -1,6 +1,7 @@
 import { Form } from "react-bootstrap";
 
 const AddPetFormBodyTemplate = ({
+    isEditing,
     handleChange,
     type,
     breed,
@@ -24,7 +25,6 @@ const AddPetFormBodyTemplate = ({
                         id="dog"
                         name="type"
                         label="Dog"
-                        value="dog"
                         checked={type === "dog" ? true : false}
                         onChange={handleChange}
                         required
@@ -35,7 +35,6 @@ const AddPetFormBodyTemplate = ({
                         id="cat"
                         name="type"
                         label="Cat"
-                        value="cat"
                         checked={type === "cat" ? true : false}
                         onChange={handleChange}
                         required
@@ -85,7 +84,7 @@ const AddPetFormBodyTemplate = ({
                 accept="image/*"
                 id="photo"
                 onChange={handleChange}
-                required
+                required={isEditing ? false : true}
             />
             <Form.Group className="d-flex">
                 <div className="me-4">
@@ -146,9 +145,9 @@ const AddPetFormBodyTemplate = ({
                         id="hypoallergenic-yes"
                         name="hypoallergenic"
                         label="Yes"
-                        value={true}
-                        checked={hypoallergenic === "true" ? true : false}
+                        checked={hypoallergenic === "" ? false : hypoallergenic}
                         onChange={handleChange}
+                        required
                     />
                     <Form.Check
                         inline
@@ -156,9 +155,11 @@ const AddPetFormBodyTemplate = ({
                         id="hypoallergenic-no"
                         name="hypoallergenic"
                         label="No"
-                        value={false}
-                        checked={hypoallergenic === "false" ? true : false}
+                        checked={
+                            hypoallergenic === "" ? false : !hypoallergenic
+                        }
                         onChange={handleChange}
+                        required
                     />
                 </div>
             </Form.Group>

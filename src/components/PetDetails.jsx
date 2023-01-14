@@ -18,6 +18,8 @@ const PetDetails = ({ setShowPetActionToast, setTextPetActionToast }) => {
     const { isLoggedIn, currentUser } = useContext(UserContext);
     const { petDetails, setPetDetails } = useContext(PetContext);
 
+    useEffect(() => () => setPetDetails({}), [setPetDetails]);
+
     const {
         isSaved,
         id,
@@ -176,12 +178,10 @@ const PetDetails = ({ setShowPetActionToast, setTextPetActionToast }) => {
                                 <td>{bio}</td>
                             </tr>
                         )}
-                        {hypoallergenic && (
-                            <tr>
-                                <td>Hypoallergenic</td>
-                                <td>{hypoallergenic ? "Yes" : "No"}</td>
-                            </tr>
-                        )}
+                        <tr>
+                            <td>Hypoallergenic</td>
+                            <td>{hypoallergenic ? "Yes" : "No"}</td>
+                        </tr>
                         {dietRestrict && (
                             <tr>
                                 <td>Dietary Restrictions</td>

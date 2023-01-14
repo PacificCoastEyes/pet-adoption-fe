@@ -1,0 +1,10 @@
+#back-button-container {
+    margin: 0 auto;
+    width: 40%;
+}
+
+@media screen and (max-width: 768px) {
+    #back-button-container {
+        width: 95%;
+    }
+}
