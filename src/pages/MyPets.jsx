@@ -10,12 +10,12 @@ import "../styles/MyPets.css";
 
 const MyPets = ({ title }) => {
     const {
-        likedPets,
-        setLikedPets,
+        savedPets,
+        setSavedPets,
         ownedPets,
         setOwnedPets,
-        isViewingLikedPets,
-        setIsViewingLikedPets,
+        isViewingSavedPets,
+        setIsViewingSavedPets,
     } = useContext(PetContext);
     const { currentUser } = useContext(UserContext);
 
@@ -24,11 +24,11 @@ const MyPets = ({ title }) => {
         document.title = title;
         getPets();
         /* eslint-disable */
-    }, [isViewingLikedPets]);
+    }, [isViewingSavedPets]);
 
     const getPets = async () => {
         let queryUrl = `http://localhost:8080/pet/user/${currentUser.id}${
-            isViewingLikedPets ? "?likedPets=true" : ""
+            isViewingSavedPets ? "?savedPets=true" : ""
         }`;
         const res = await instance.get(queryUrl);
         let petsObj = {};
@@ -36,8 +36,8 @@ const MyPets = ({ title }) => {
             petsObj[pet.id] = { ...pet };
         }
         petsObj = await checkIfPetSaved(petsObj, currentUser);
-        if (isViewingLikedPets) {
-            setLikedPets(petsObj);
+        if (isViewingSavedPets) {
+            setSavedPets(petsObj);
         } else {
             setOwnedPets(petsObj);
         }
@@ -53,8 +53,8 @@ const MyPets = ({ title }) => {
                 id="my-pets-header"
             >
                 <h2>
-                    {isViewingLikedPets
-                        ? "Liked Pets"
+                    {isViewingSavedPets
+                        ? "Saved Pets"
                         : "Fostered and Adopted Pets"}
                 </h2>
                 <Form.Group
@@ -67,19 +67,19 @@ const MyPets = ({ title }) => {
                     <Form.Switch
                         id="my-pets-toggle"
                         className="my-pets-toggle mx-2"
-                        checked={isViewingLikedPets}
+                        checked={isViewingSavedPets}
                         onChange={() =>
-                            setIsViewingLikedPets(!isViewingLikedPets)
+                            setIsViewingSavedPets(!isViewingSavedPets)
                         }
                     />
-                    <label htmlFor="my-pets-toggle">Liked Pets</label>
+                    <label htmlFor="my-pets-toggle">Saved Pets</label>
                 </Form.Group>
             </div>
             <div className="d-flex flex-wrap mt-3" id="my-pets-container">
-                {Object.keys(isViewingLikedPets ? likedPets : ownedPets)
+                {Object.keys(isViewingSavedPets ? savedPets : ownedPets)
                     .length > 0 ? (
                     Object.values(
-                        isViewingLikedPets ? likedPets : ownedPets
+                        isViewingSavedPets ? savedPets : ownedPets
                     ).map(item => {
                         const { id } = item;
                         return (
@@ -87,7 +87,7 @@ const MyPets = ({ title }) => {
                                 key={id}
                                 id={id}
                                 referrer={
-                                    isViewingLikedPets ? "liked" : "owned"
+                                    isViewingSavedPets ? "saved" : "owned"
                                 }
                             />
                         );
@@ -97,7 +97,7 @@ const MyPets = ({ title }) => {
                         className="d-flex justify-content-center align-items-center"
                         id="my-pets-placeholder"
                     >
-                        {isViewingLikedPets ? (
+                        {isViewingSavedPets ? (
                             <div id="bookmark-heart" className="me-3">
                                 <BookmarkHeart />
                             </div>
@@ -113,8 +113,8 @@ const MyPets = ({ title }) => {
                         )}
                         <h1>
                             You currently have no
-                            {isViewingLikedPets
-                                ? " liked "
+                            {isViewingSavedPets
+                                ? " saved "
                                 : " fostered or adopted "}
                             pets
                         </h1>

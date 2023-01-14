@@ -12,6 +12,7 @@ import Search from "./Search";
 import Pet from "./Pet";
 import PrivateRoute from "./PrivateRoute";
 import MyPets from "./MyPets";
+import Dashboard from "./Dashboard";
 
 function App() {
     return (
@@ -78,6 +79,25 @@ function App() {
                                             element={
                                                 <PrivateRoute testingFor="isAdmin">
                                                     <AddPet title="Add Pet | The Pet Haven" />
+                                                </PrivateRoute>
+                                            }
+                                        />
+                                        <Route
+                                            path="/editpet"
+                                            element={
+                                                <PrivateRoute testingFor="isAdmin">
+                                                    <AddPet
+                                                        title="Edit Pet | The Pet Haven"
+                                                        isEditing
+                                                    />
+                                                </PrivateRoute>
+                                            }
+                                        />
+                                        <Route
+                                            path="/dashboard"
+                                            element={
+                                                <PrivateRoute testingFor="isAdmin">
+                                                    <Dashboard title="Dashboard | The Pet Haven" />
                                                 </PrivateRoute>
                                             }
                                         />

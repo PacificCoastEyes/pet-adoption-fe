@@ -44,8 +44,6 @@ const Pet = ({ title }) => {
         const id = params.get("id");
         if (id) {
             fetchPetDetails(id);
-            // const interval = setInterval(() => fetchPetDetails(id), 5000);
-            // return () => clearInterval(interval);
         }
     }, [currentUser, isLoggedIn, setPetDetails, title]);
     return Object.keys(petDetails).length ? (

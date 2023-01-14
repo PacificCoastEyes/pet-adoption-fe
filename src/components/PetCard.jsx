@@ -19,7 +19,7 @@ const PetCard = ({ id, referrer }) => {
         searchResults,
         setSearchResults,
         setPetDetailsReferrer,
-        likedPets,
+        savedPets,
         ownedPets,
     } = useContext(PetContext);
 
@@ -35,8 +35,8 @@ const PetCard = ({ id, referrer }) => {
         case "owned":
             item = ownedPets[id];
             break;
-        case "liked":
-            item = likedPets[id];
+        case "saved":
+            item = savedPets[id];
             break;
         default:
             break;

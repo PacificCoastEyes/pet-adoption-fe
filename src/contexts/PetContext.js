@@ -5,10 +5,11 @@ export const PetContext = createContext();
 const PetContextProvider = ({ children }) => {
     const [searchResults, setSearchResults] = useState({});
     const [petDetails, setPetDetails] = useState({});
-    const [likedPets, setLikedPets] = useState({});
+    const [savedPets, setSavedPets] = useState({});
     const [ownedPets, setOwnedPets] = useState({});
     const [petDetailsReferrer, setPetDetailsReferrer] = useState("");
-    const [isViewingLikedPets, setIsViewingLikedPets] = useState(false);
+    const [isViewingSavedPets, setIsViewingSavedPets] = useState(false);
+    const [allPets, setAllPets] = useState([]);
 
     return (
         <PetContext.Provider
@@ -17,14 +18,16 @@ const PetContextProvider = ({ children }) => {
                 setSearchResults,
                 petDetails,
                 setPetDetails,
-                likedPets,
-                setLikedPets,
+                savedPets,
+                setSavedPets,
                 ownedPets,
                 setOwnedPets,
                 petDetailsReferrer,
                 setPetDetailsReferrer,
-                isViewingLikedPets,
-                setIsViewingLikedPets,
+                isViewingSavedPets,
+                setIsViewingSavedPets,
+                allPets,
+                setAllPets,
             }}
         >
             {children}
