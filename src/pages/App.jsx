@@ -13,6 +13,7 @@ import Pet from "./Pet";
 import PrivateRoute from "./PrivateRoute";
 import MyPets from "./MyPets";
 import Dashboard from "./Dashboard";
+import User from "./User";
 
 function App() {
     return (
@@ -119,6 +120,14 @@ function App() {
                                             path="/pet"
                                             element={
                                                 <Pet title="Pet Details | The Pet Haven" />
+                                            }
+                                        />
+                                        <Route
+                                            path="/user"
+                                            element={
+                                                <PrivateRoute testingFor="isAdmin">
+                                                    <User title="User Details | The Pet Haven" />
+                                                </PrivateRoute>
                                             }
                                         />
                                     </Routes>

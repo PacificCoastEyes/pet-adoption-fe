@@ -9,7 +9,6 @@ const PetContextProvider = ({ children }) => {
     const [ownedPets, setOwnedPets] = useState({});
     const [petDetailsReferrer, setPetDetailsReferrer] = useState("");
     const [isViewingSavedPets, setIsViewingSavedPets] = useState(false);
-    const [allPets, setAllPets] = useState([]);
 
     return (
         <PetContext.Provider
@@ -26,8 +25,6 @@ const PetContextProvider = ({ children }) => {
                 setPetDetailsReferrer,
                 isViewingSavedPets,
                 setIsViewingSavedPets,
-                allPets,
-                setAllPets,
             }}
         >
             {children}

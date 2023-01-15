@@ -1,6 +1,4 @@
-import { useContext, useEffect } from "react";
-import { PetContext } from "../contexts/PetContext";
-import { UserContext } from "../contexts/UserContext";
+import { useEffect, useState } from "react";
 import { instance } from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css";
@@ -9,8 +7,8 @@ import { CheckLg, ExclamationCircle } from "react-bootstrap-icons";
 import capitalize from "../utilities/capitalize";
 
 const Dashboard = ({ title }) => {
-    const { allPets, setAllPets } = useContext(PetContext);
-    const { allUsers, setAllUsers } = useContext(UserContext);
+    const [allPets, setAllPets] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
         /* eslint-enable */
@@ -34,14 +32,13 @@ const Dashboard = ({ title }) => {
 
     return (
         <div id="dashboard" className="d-flex justify-content-center">
-            <div id="dashboard-pets">
+            <div id="dashboard-left">
                 <div
                     className="d-flex justify-content-between align-items-center"
-                    id="dashboard-pets-header"
+                    id="dashboard-left-header"
                 >
                     <h2>Pets</h2>
                     <div className="dashboard-stats">
-                        <h4>Total: {allPets.length}</h4>
                         <h6>
                             Dogs:{" "}
                             {allPets.filter(pet => pet.type === "dog").length}
@@ -72,12 +69,16 @@ const Dashboard = ({ title }) => {
                                     .length
                             }
                         </h6>
+                        <h4>Total: {allPets.length}</h4>
                     </div>
                 </div>
                 <div
                     className="d-flex flex-wrap mt-4"
-                    id="dashboard-pets-container"
+                    id="dashboard-left-container"
                 >
+                    <h2 className="mobile-please-rotate">
+                        Please rotate device to landscape to view table
+                    </h2>
                     {allPets.length > 0 ? (
                         <Table
                             striped
@@ -127,7 +128,7 @@ const Dashboard = ({ title }) => {
                                             <td>
                                                 {updatedAt
                                                     ? new Date(
-                                                          createdAt
+                                                          updatedAt
                                                       ).toLocaleDateString()
                                                     : "—"}
                                             </td>
@@ -139,7 +140,7 @@ const Dashboard = ({ title }) => {
                     ) : (
                         <div
                             className="d-flex justify-content-center align-items-center"
-                            id="dashboard-pets-placeholder"
+                            id="dashboard-left-placeholder"
                         >
                             <ExclamationCircle />
                             <h4 className="ms-2">
@@ -149,14 +150,13 @@ const Dashboard = ({ title }) => {
                     )}
                 </div>
             </div>
-            <div id="dashboard-users">
+            <div id="dashboard-right">
                 <div
                     className="d-flex justify-content-between align-items-center"
-                    id="dashboard-users-header"
+                    id="dashboard-right-header"
                 >
                     <h2>Users</h2>
                     <div className="dashboard-stats">
-                        <h4>Total: {allUsers.length}</h4>
                         <h6>
                             Members:{" "}
                             {allUsers.filter(user => !user.isAdmin).length}
@@ -165,12 +165,16 @@ const Dashboard = ({ title }) => {
                             Admins:{" "}
                             {allUsers.filter(user => user.isAdmin).length}
                         </h6>
+                        <h4>Total: {allUsers.length}</h4>
                     </div>
                 </div>
                 <div
                     className="d-flex flex-wrap mt-4"
-                    id="dashboard-users-container"
+                    id="dashboard-right-container"
                 >
+                    <h2 className="mobile-please-rotate">
+                        Please rotate device to landscape to view table
+                    </h2>
                     <Table striped borderless hover className="dashboard-table">
                         <thead className="p-2">
                             <tr>
@@ -196,10 +200,17 @@ const Dashboard = ({ title }) => {
                                     updatedAt,
                                 } = item;
                                 return (
-                                    <tr key={id}>
+                                    <tr
+                                        key={id}
+                                        onClick={() =>
+                                            navigate(`/user?id=${id}`)
+                                        }
+                                    >
                                         <td>{id}</td>
                                         <td>{isAdmin ? <CheckLg /> : ""}</td>
-                                        <td>{first_name + " " + last_name}</td>
+                                        <td id="admin-check">
+                                            {first_name + " " + last_name}
+                                        </td>
                                         <td>{email}</td>
                                         <td>{phone}</td>
                                         <td>
