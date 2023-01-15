@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import checkIfPetSaved from "../utilities/checkIfPetSaved";
 import PetDetails from "../components/PetDetails";
 import PetActionToast from "../components/PetActionToast";
-import { ArrowLeft, InfoCircleFill } from "react-bootstrap-icons";
+import { ArrowLeft, ExclamationCircle } from "react-bootstrap-icons";
 import { Button } from "react-bootstrap";
 import "../styles/Pet.css";
 
@@ -88,7 +88,7 @@ const Pet = ({ title }) => {
                 className="d-flex justify-content-center align-items-center"
                 id="pet-details-placeholder"
             >
-                <InfoCircleFill />
+                <ExclamationCircle />
                 <h1 className="ms-4 mb-0">
                     {petNotFound
                         ? "404 Pet Not Found"

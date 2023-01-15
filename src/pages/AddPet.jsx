@@ -144,7 +144,7 @@ const AddPet = ({ title, isEditing }) => {
     return (
         <div className="py-4" id="add-pet-container">
             {isEditing && (
-                <div id="back-button-container">
+                <div id="back-button-container-add-pet">
                     <Button
                         variant="secondary"
                         className="mb-3"

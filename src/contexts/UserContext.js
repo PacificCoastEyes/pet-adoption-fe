@@ -12,7 +12,6 @@ const UserContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(
         JSON.parse(localStorage.getItem("currentUser")) || {}
     );
-    const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
         const fetchPrevUser = async () => {
@@ -43,8 +42,6 @@ const UserContextProvider = ({ children }) => {
                 setIsLoggingOut,
                 currentUser,
                 setCurrentUser,
-                allUsers,
-                setAllUsers,
             }}
         >
             {children}
