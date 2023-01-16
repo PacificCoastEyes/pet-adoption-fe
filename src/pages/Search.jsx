@@ -86,7 +86,7 @@ const Search = ({ title }) => {
                 } found`,
             });
         }
-    }, [searchResults, alertMsg, alertVariant, setAlertMsg, setAlertVariant]);
+    }, [searchResults]);
 
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {
