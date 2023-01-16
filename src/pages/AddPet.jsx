@@ -62,7 +62,7 @@ const AddPet = ({ title, isEditing }) => {
         } else {
             handleReset();
         }
-    }, [isEditing, resetAlertPageBasedForm, title, handleReset]);
+    }, [isEditing, title]);
 
     const {
         type,
