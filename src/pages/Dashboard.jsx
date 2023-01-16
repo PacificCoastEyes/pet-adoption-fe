@@ -11,12 +11,10 @@ const Dashboard = ({ title }) => {
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
-        /* eslint-enable */
         document.title = title;
         getAllPets();
         getAllUsers();
-        /* eslint-disable */
-    }, []);
+    }, [title]);
 
     const getAllPets = async () => {
         const res = await instance.get("http://localhost:8080/pet");

@@ -24,9 +24,7 @@ const PageBasedFormFooter = ({
                 <Button onClick={handleReset} variant="light" className="me-2">
                     Clear
                 </Button>
-                {btnSubmitText && (
-                    <Button type="submit">{btnSubmitText}</Button>
-                )}
+                <Button type="submit">{btnSubmitText}</Button>
             </div>
         </div>
     );

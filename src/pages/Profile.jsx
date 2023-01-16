@@ -22,8 +22,7 @@ const Profile = ({ title }) => {
     useEffect(() => {
         document.title = title;
         resetAlertPageBasedForm("profileForm");
-        // eslint-disable-next-line
-    }, []);
+    }, [title, resetAlertPageBasedForm]);
 
     const draftProfileDataSchema = {
         firstName: "",
