@@ -22,7 +22,7 @@ const Profile = ({ title }) => {
     useEffect(() => {
         document.title = title;
         resetAlertPageBasedForm("profileForm");
-    }, [title, resetAlertPageBasedForm]);
+    }, [title]);
 
     const draftProfileDataSchema = {
         firstName: "",
