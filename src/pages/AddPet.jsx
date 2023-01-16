@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import PageBasedForm from "../components/forms/PageBasedForm";
@@ -19,24 +19,30 @@ const AddPet = ({ title, isEditing }) => {
         resetAlertPageBasedForm,
     } = useContext(PageBasedFormContext);
 
-    const draftPetDataSchema = {
-        type: "",
-        breed: "",
-        name: "",
-        status: "",
-        photo: null,
-        height: "",
-        weight: "",
-        color: "",
-        bio: "",
-        hypoallergenic: "",
-        dietRestrict: "",
-    };
+    const draftPetDataSchema = useMemo(() => {
+        return {
+            type: "",
+            breed: "",
+            name: "",
+            status: "",
+            photo: null,
+            height: "",
+            weight: "",
+            color: "",
+            bio: "",
+            hypoallergenic: "",
+            dietRestrict: "",
+        };
+    }, []);
 
     const [draftPetData, setDraftPetData] = useState(draftPetDataSchema);
 
+    const handleReset = useCallback(() => {
+        setDraftPetData(draftPetDataSchema);
+        document.getElementById("photo").value = null;
+    }, [draftPetDataSchema]);
+
     useEffect(() => {
-        /* eslint-enable */
         document.title = title;
         resetAlertPageBasedForm("addPetForm");
 
@@ -56,8 +62,7 @@ const AddPet = ({ title, isEditing }) => {
         } else {
             handleReset();
         }
-        /* eslint-disable */
-    }, [isEditing]);
+    }, [isEditing, resetAlertPageBasedForm, title, handleReset]);
 
     const {
         type,
@@ -71,11 +76,6 @@ const AddPet = ({ title, isEditing }) => {
         hypoallergenic,
         dietRestrict,
     } = draftPetData;
-
-    const handleReset = () => {
-        setDraftPetData(draftPetDataSchema);
-        document.getElementById("photo").value = null;
-    };
 
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {

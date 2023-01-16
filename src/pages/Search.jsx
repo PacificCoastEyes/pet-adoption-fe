@@ -34,10 +34,41 @@ const Search = ({ title }) => {
     const { type, name, status, height, weight } = draftSearchData;
 
     useEffect(() => {
-        /* eslint-enable */
         document.title = title;
-        /* eslint-disable */
-    }, []);
+    }, [title]);
+
+    const getSearchResults = async () => {
+        let queryUrl = "http://localhost:8080/pet?";
+        for (const field in draftSearchData) {
+            if (draftSearchData[field]) {
+                queryUrl += `${field}=${draftSearchData[field]}&`;
+            }
+        }
+        queryUrl = queryUrl.slice(0, queryUrl.length - 1);
+        const res = await instance.get(queryUrl);
+        let petsObj = {};
+        for (const pet of res.data) {
+            petsObj[pet.id] = { ...pet };
+        }
+        if (isLoggedIn) petsObj = await checkIfPetSaved(petsObj, currentUser);
+        setSearchResults(petsObj);
+        setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
+    };
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        try {
+            await getSearchResults();
+        } catch (err) {
+            console.log(err);
+            setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
+            setAlertVariant({ ...alertVariant, searchForm: "danger" });
+            setAlertMsg({
+                ...alertMsg,
+                searchForm: `Sorry, there was a problem getting search results. ${err.response.data}`,
+            });
+        }
+    };
 
     useEffect(() => {
         if (Object.keys(searchResults).length === 0) {
@@ -55,11 +86,7 @@ const Search = ({ title }) => {
                 } found`,
             });
         }
-    }, [searchResults]);
-
-    useEffect(() => {
-        handleSubmit();
-    }, [draftSearchData]);
+    }, [searchResults, alertMsg, alertVariant, setAlertMsg, setAlertVariant]);
 
     const handleChange = e => {
         if (e.target.id === "dog" || e.target.id === "cat") {
@@ -80,38 +107,6 @@ const Search = ({ title }) => {
         }
     };
 
-    const getSearchResults = async () => {
-        let queryUrl = "http://localhost:8080/pet?";
-        for (const field in draftSearchData) {
-            if (draftSearchData[field]) {
-                queryUrl += `${field}=${draftSearchData[field]}&`;
-            }
-        }
-        queryUrl = queryUrl.slice(0, queryUrl.length - 1);
-        const res = await instance.get(queryUrl);
-        let petsObj = {};
-        for (const pet of res.data) {
-            petsObj[pet.id] = { ...pet };
-        }
-        if (isLoggedIn) petsObj = await checkIfPetSaved(petsObj, currentUser);
-        setSearchResults(petsObj);
-        setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
-    };
-
-    const handleSubmit = async () => {
-        try {
-            await getSearchResults();
-        } catch (err) {
-            console.log(err);
-            setIsHiddenAlert({ ...isHiddenAlert, searchForm: false });
-            setAlertVariant({ ...alertVariant, searchForm: "danger" });
-            setAlertMsg({
-                ...alertMsg,
-                searchForm: `Sorry, there was a problem getting search results. ${err.response.data}`,
-            });
-        }
-    };
-
     const handleReset = () => {
         setDraftSearchData(draftSearchDataSchema);
     };
@@ -122,6 +117,7 @@ const Search = ({ title }) => {
                 <PageBasedForm
                     isSearchForm={true}
                     onSubmit={handleSubmit}
+                    btnSubmitText="Search"
                     handleReset={handleReset}
                     headerTitle="Search Pets"
                     isAdvancedSearch={isAdvancedSearch}

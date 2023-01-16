@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { PetContext } from "../contexts/PetContext";
 import { UserContext } from "../contexts/UserContext";
 import PetCard from "../components/PetCard";
@@ -19,14 +19,7 @@ const MyPets = ({ title }) => {
     } = useContext(PetContext);
     const { currentUser } = useContext(UserContext);
 
-    useEffect(() => {
-        /* eslint-enable */
-        document.title = title;
-        getPets();
-        /* eslint-disable */
-    }, [isViewingSavedPets]);
-
-    const getPets = async () => {
+    const getPets = useCallback(async () => {
         let queryUrl = `http://localhost:8080/pet/user/${currentUser.id}${
             isViewingSavedPets ? "?savedPets=true" : ""
         }`;
@@ -41,7 +34,12 @@ const MyPets = ({ title }) => {
         } else {
             setOwnedPets(petsObj);
         }
-    };
+    }, [currentUser, isViewingSavedPets, setOwnedPets, setSavedPets]);
+
+    useEffect(() => {
+        document.title = title;
+        getPets();
+    }, [isViewingSavedPets, getPets, title]);
 
     return (
         <div
