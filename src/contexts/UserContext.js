@@ -17,7 +17,7 @@ const UserContextProvider = ({ children }) => {
         const fetchPrevUser = async () => {
             try {
                 const res = await instance.get(
-                    "http://localhost:8080/fetchPrevUser"
+                    "https://thepethaven-be.azurewebsites.net/fetchPrevUser"
                 );
                 const { id, firstName, isAdmin } = res.data.user;
                 setCurrentUser({ id, firstName, isAdmin });

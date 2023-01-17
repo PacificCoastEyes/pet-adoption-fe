@@ -3,7 +3,7 @@ import { instance } from "../axiosInstance";
 export default async function checkIfPetSaved(petsObj, currentUser) {
     for (const id in petsObj) {
         const res = await instance.get(
-            `http://localhost:8080/pet/${id}/save?uid=${currentUser.id}`
+            `https://thepethaven-be.azurewebsites.net/pet/${id}/save?uid=${currentUser.id}`
         );
         petsObj[id] = {
             ...petsObj[id],
