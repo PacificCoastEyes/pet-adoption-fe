@@ -90,7 +90,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
     const handleLogin = async () => {
         try {
             const res = await instance.post(
-                `${process.env.REACT_APP_SERVER_URL}/login`,
+                "https://thepethaven-be.azurewebsites.net/login",
                 loginFormData
             );
             setIsHiddenAlert({
