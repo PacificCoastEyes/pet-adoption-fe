@@ -51,7 +51,7 @@ const AddPet = ({ title, isEditing }) => {
                 const params = new URL(document.location).searchParams;
                 try {
                     const { data } = await instance.get(
-                        `${process.env.REACT_APP_SERVER_URL}/pet/${params.get(
+                        `https://thepethaven-be.azurewebsites.net/pet/${params.get(
                             "id"
                         )}`
                     );
@@ -116,12 +116,12 @@ const AddPet = ({ title, isEditing }) => {
         try {
             if (isEditing) {
                 await instance.put(
-                    `${process.env.REACT_APP_SERVER_URL}/pet/${draftPetData.id}`,
+                    "https://thepethaven-be.azurewebsites.net/pet/${draftPetData.id}",
                     formData
                 );
             } else {
                 await instance.post(
-                    `${process.env.REACT_APP_SERVER_URL}/pet`,
+                    "https://thepethaven-be.azurewebsites.net/pet",
                     formData
                 );
             }

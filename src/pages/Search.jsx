@@ -38,7 +38,7 @@ const Search = ({ title }) => {
     }, [title]);
 
     const getSearchResults = async () => {
-        let queryUrl = `${process.env.REACT_APP_SERVER_URL}/pet?`;
+        let queryUrl = "https://thepethaven-be.azurewebsites.net/pet?";
         for (const field in draftSearchData) {
             if (draftSearchData[field]) {
                 queryUrl += `${field}=${draftSearchData[field]}&`;

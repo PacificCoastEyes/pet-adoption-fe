@@ -20,7 +20,7 @@ const MyPets = ({ title }) => {
     const { currentUser } = useContext(UserContext);
 
     const getPets = useCallback(async () => {
-        let queryUrl = `${process.env.REACT_APP_SERVER_URL}/pet/user/${
+        let queryUrl = `https://thepethaven-be.azurewebsites.net/pet/user/${
             currentUser.id
         }${isViewingSavedPets ? "?savedPets=true" : ""}`;
         const res = await instance.get(queryUrl);

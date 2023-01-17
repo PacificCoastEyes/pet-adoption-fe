@@ -20,7 +20,7 @@ const User = ({ title }) => {
         const params = new URL(document.location).searchParams;
         const id = params.get("id");
         const res = await instance.get(
-            `${process.env.REACT_APP_SERVER_URL}/user/${id}/full`
+            `https://thepethaven-be.azurewebsites.net/user/${id}/full`
         );
         setUserDetails(res.data.user);
         setUserPets(res.data.pets);

@@ -48,7 +48,7 @@ const Profile = ({ title }) => {
         const fetchUserDetails = async () => {
             try {
                 const res = await instance.get(
-                    `${process.env.REACT_APP_SERVER_URL}/user/${currentUser.id}`
+                    `https://thepethaven-be.azurewebsites.net/user/${currentUser.id}`
                 );
                 for (const field in res.data.user) {
                     if (res.data.user[field] === null)
@@ -95,7 +95,7 @@ const Profile = ({ title }) => {
         e.preventDefault();
         try {
             await instance.put(
-                `http://localhost:8080/user/${currentUser.id}`,
+                `https://thepethaven-be.azurewebsites.net/user/${currentUser.id}`,
                 draftProfileData
             );
             alertSuccess();

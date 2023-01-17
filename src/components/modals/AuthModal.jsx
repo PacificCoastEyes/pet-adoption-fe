@@ -56,7 +56,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
                 confirmPassword,
             } = signupFormData;
             const res = await instance.post(
-                `${process.env.REACT_APP_SERVER_URL}/signup`,
+                "https://thepethaven-be.azurewebsites.net/signup",
                 {
                     firstName,
                     lastName,

@@ -18,14 +18,14 @@ const Dashboard = ({ title }) => {
 
     const getAllPets = async () => {
         const res = await instance.get(
-            `${process.env.REACT_APP_SERVER_URL}/pet`
+            "https://thepethaven-be.azurewebsites.net/pet"
         );
         setAllPets(res.data);
     };
 
     const getAllUsers = async () => {
         const res = await instance.get(
-            `${process.env.REACT_APP_SERVER_URL}/user`
+            "https://thepethaven-be.azurewebsites.net/user"
         );
         setAllUsers(res.data);
     };
