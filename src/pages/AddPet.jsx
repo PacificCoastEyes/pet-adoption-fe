@@ -64,6 +64,7 @@ const AddPet = ({ title, isEditing }) => {
         } else {
             handleReset();
         }
+        // eslint-disable-next-line
     }, [isEditing, title]);
 
     const {

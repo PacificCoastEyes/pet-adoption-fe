@@ -11,10 +11,9 @@ const User = ({ title }) => {
     const [userPets, setUserPets] = useState([]);
 
     useEffect(() => {
-        /* eslint-enable */
         document.title = title;
         getUserWithPets();
-        /* eslint-disable */
+        // eslint-disable-next-line
     }, []);
 
     const getUserWithPets = async () => {

@@ -86,6 +86,7 @@ const Search = ({ title }) => {
                 } found`,
             });
         }
+        // eslint-disable-next-line
     }, [searchResults]);
 
     const handleChange = e => {
