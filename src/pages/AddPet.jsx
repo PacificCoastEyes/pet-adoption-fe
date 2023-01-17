@@ -116,7 +116,7 @@ const AddPet = ({ title, isEditing }) => {
         try {
             if (isEditing) {
                 await instance.put(
-                    "https://thepethaven-be.azurewebsites.net/pet/${draftPetData.id}",
+                    `https://thepethaven-be.azurewebsites.net/pet/${draftPetData.id}`,
                     formData
                 );
             } else {
