@@ -7,7 +7,7 @@
     ],
     "responseOverrides": {
         "400": {
-            "rewrite": "Test Message"
+            "rewrite": "Test Message, hope this works"
         }
     }
 }
