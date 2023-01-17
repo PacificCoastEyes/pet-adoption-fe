@@ -1,0 +1,13 @@
+{
+    "routes": [
+        {
+            "route": "/search",
+            "redirect": "/search"
+        }
+    ],
+    "responseOverrides": {
+        "400": {
+            "rewrite": "Test Message"
+        }
+    }
+}
