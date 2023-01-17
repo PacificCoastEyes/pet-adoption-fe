@@ -110,7 +110,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
                 `Welcome back to The Pet Haven, ${res.data.user.firstName}!`
             );
         } catch (err) {
-            setMsgAlertAuthError(err.response.data);
+            setMsgAlertAuthError(err.response.data.message);
             setIsHiddenAlert({
                 ...isHiddenAlert,
                 authError: { ...isHiddenAlert.authError, login: false },
