@@ -20,9 +20,9 @@ const MyPets = ({ title }) => {
     const { currentUser } = useContext(UserContext);
 
     const getPets = useCallback(async () => {
-        let queryUrl = `http://localhost:8080/pet/user/${currentUser.id}${
-            isViewingSavedPets ? "?savedPets=true" : ""
-        }`;
+        let queryUrl = `${process.env.REACT_APP_SERVER_URL}/pet/user/${
+            currentUser.id
+        }${isViewingSavedPets ? "?savedPets=true" : ""}`;
         const res = await instance.get(queryUrl);
         let petsObj = {};
         for (const pet of res.data) {

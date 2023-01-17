@@ -47,7 +47,7 @@ const Profile = ({ title }) => {
         const fetchUserDetails = async () => {
             try {
                 const res = await instance.get(
-                    `http://localhost:8080/user/${currentUser.id}`
+                    `${process.env.REACT_APP_SERVER_URL}/user/${currentUser.id}`
                 );
                 for (const field in res.data.user) {
                     if (res.data.user[field] === null)

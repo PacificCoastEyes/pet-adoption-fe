@@ -81,12 +81,12 @@ const PetDetails = ({ setShowPetActionToast, setTextPetActionToast }) => {
             let success;
             if (action === "foster" || action === "adopt") {
                 success = await instance.post(
-                    `http://localhost:8080/pet/${id}/adopt`,
+                    `${process.env.REACT_APP_SERVER_URL}/pet/${id}/adopt`,
                     { action: action }
                 );
             } else {
                 success = await instance.post(
-                    `http://localhost:8080/pet/${id}/return`
+                    `${process.env.REACT_APP_SERVER_URL}/pet/${id}/return`
                 );
             }
             if (!success) throw new Error();

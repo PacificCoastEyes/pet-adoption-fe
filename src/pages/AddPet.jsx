@@ -51,7 +51,9 @@ const AddPet = ({ title, isEditing }) => {
                 const params = new URL(document.location).searchParams;
                 try {
                     const { data } = await instance.get(
-                        `http://localhost:8080/pet/${params.get("id")}`
+                        `${process.env.REACT_APP_SERVER_URL}/pet/${params.get(
+                            "id"
+                        )}`
                     );
                     setDraftPetData(data);
                 } catch (err) {
@@ -113,11 +115,14 @@ const AddPet = ({ title, isEditing }) => {
         try {
             if (isEditing) {
                 await instance.put(
-                    `http://localhost:8080/pet/${draftPetData.id}`,
+                    `${process.env.REACT_APP_SERVER_URL}/pet/${draftPetData.id}`,
                     formData
                 );
             } else {
-                await instance.post(`http://localhost:8080/pet`, formData);
+                await instance.post(
+                    `${process.env.REACT_APP_SERVER_URL}/pet`,
+                    formData
+                );
             }
             setIsHiddenAlert({ ...isHiddenAlert, addPetForm: false });
             setAlertVariant({ ...isHiddenAlert, addPetForm: "success" });

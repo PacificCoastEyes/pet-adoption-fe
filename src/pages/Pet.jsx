@@ -24,7 +24,7 @@ const Pet = ({ title }) => {
         const fetchPetDetails = async id => {
             try {
                 const { data } = await instance.get(
-                    `http://localhost:8080/pet/${id}`
+                    `${process.env.REACT_APP_SERVER_URL}/pet/${id}`
                 );
                 if (isLoggedIn) {
                     let petObj = {};

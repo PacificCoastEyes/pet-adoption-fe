@@ -20,7 +20,9 @@ const User = ({ title }) => {
     const getUserWithPets = async () => {
         const params = new URL(document.location).searchParams;
         const id = params.get("id");
-        const res = await instance.get(`http://localhost:8080/user/${id}/full`);
+        const res = await instance.get(
+            `${process.env.REACT_APP_SERVER_URL}/user/${id}/full`
+        );
         setUserDetails(res.data.user);
         setUserPets(res.data.pets);
     };

@@ -38,7 +38,7 @@ const Search = ({ title }) => {
     }, [title]);
 
     const getSearchResults = async () => {
-        let queryUrl = "http://localhost:8080/pet?";
+        let queryUrl = `${process.env.REACT_APP_SERVER_URL}/pet?`;
         for (const field in draftSearchData) {
             if (draftSearchData[field]) {
                 queryUrl += `${field}=${draftSearchData[field]}&`;

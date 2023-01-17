@@ -55,14 +55,17 @@ const AuthModal = ({ handleAuthModalClose }) => {
                 password,
                 confirmPassword,
             } = signupFormData;
-            const res = await instance.post("http://localhost:8080/signup", {
-                firstName,
-                lastName,
-                email,
-                phone,
-                password,
-                confirmPassword,
-            });
+            const res = await instance.post(
+                `${process.env.REACT_APP_SERVER_URL}/signup`,
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    password,
+                    confirmPassword,
+                }
+            );
             setCurrentUser({ ...res.data.user });
             setIsLoggedIn(true);
             localStorage.setItem(
@@ -87,7 +90,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
     const handleLogin = async () => {
         try {
             const res = await instance.post(
-                "http://localhost:8080/login",
+                `${process.env.REACT_APP_SERVER_URL}/login`,
                 loginFormData
             );
             setIsHiddenAlert({
