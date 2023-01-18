@@ -35,9 +35,3 @@ select {
         width: 95%;
     }
 }
-
-@media screen and (max-width: 450px) {
-    .alert-submit {
-        max-width: 65%;
-    }
-}
