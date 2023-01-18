@@ -35,6 +35,7 @@ const AddPet = ({ title, isEditing }) => {
         };
     }, []);
 
+    const [isHiddenSpinner, setIsHiddenSpinner] = useState(true);
     const [draftPetData, setDraftPetData] = useState(draftPetDataSchema);
 
     const handleReset = useCallback(() => {
@@ -109,6 +110,8 @@ const AddPet = ({ title, isEditing }) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        setIsHiddenSpinner(false);
+        setIsHiddenAlert({ ...isHiddenAlert, addPetForm: true });
         const formData = new FormData();
         for (const field in draftPetData) {
             formData.append(field, draftPetData[field]);
@@ -142,6 +145,8 @@ const AddPet = ({ title, isEditing }) => {
                     isEditing ? "updating" : "adding"
                 } the pet - ${err.response.data}`,
             });
+        } finally {
+            setIsHiddenSpinner(true);
         }
     };
 
@@ -168,6 +173,7 @@ const AddPet = ({ title, isEditing }) => {
                 headerTitle={isEditing ? "Edit Pet" : "Add Pet"}
                 btnSubmitText={isEditing ? "Update" : "Add"}
                 isHiddenAlert={isHiddenAlert.addPetForm}
+                isHiddenSpinner={isHiddenSpinner}
                 alertVariant={alertVariant.addPetForm}
                 alertMsg={alertMsg.addPetForm}
             >

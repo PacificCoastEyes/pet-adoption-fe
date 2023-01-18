@@ -19,6 +19,8 @@ const Profile = ({ title }) => {
         resetAlertPageBasedForm,
     } = useContext(PageBasedFormContext);
 
+    const [isHiddenSpinner, setIsHiddenSpinner] = useState(true);
+
     useEffect(() => {
         document.title = title;
         resetAlertPageBasedForm("profileForm");
@@ -93,6 +95,8 @@ const Profile = ({ title }) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        setIsHiddenSpinner(false);
+        setIsHiddenAlert({ ...isHiddenAlert, profileForm: true });
         try {
             await instance.put(
                 `https://thepethaven-be.azurewebsites.net/user/${currentUser.id}`,
@@ -107,6 +111,8 @@ const Profile = ({ title }) => {
                 ...alertMsg,
                 profileForm: `There was a problem updating your profile. ${err.response.data}`,
             });
+        } finally {
+            setIsHiddenSpinner(true);
         }
     };
 
@@ -118,6 +124,7 @@ const Profile = ({ title }) => {
                 headerTitle="My Profile"
                 btnSubmitText="Save"
                 isHiddenAlert={isHiddenAlert.profileForm}
+                isHiddenSpinner={isHiddenSpinner}
                 alertVariant={alertVariant.profileForm}
                 alertMsg={alertMsg.profileForm}
             >

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PageBasedFormContext } from "../contexts/PageBasedFormContext";
 import { PetContext } from "../contexts/PetContext";
 import { SearchContext } from "../contexts/SearchContext";
@@ -33,6 +33,8 @@ const Search = ({ title }) => {
 
     const { type, name, status, height, weight } = draftSearchData;
 
+    const [isHiddenSpinner, setIsHiddenSpinner] = useState(true);
+
     useEffect(() => {
         document.title = title;
     }, [title]);
@@ -57,6 +59,8 @@ const Search = ({ title }) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        setIsHiddenSpinner(false);
+        setIsHiddenAlert({ ...isHiddenAlert, searchForm: true });
         try {
             await getSearchResults();
         } catch (err) {
@@ -67,6 +71,8 @@ const Search = ({ title }) => {
                 ...alertMsg,
                 searchForm: `Sorry, there was a problem getting search results. ${err.response.data}`,
             });
+        } finally {
+            setIsHiddenSpinner(true);
         }
     };
 
@@ -124,6 +130,7 @@ const Search = ({ title }) => {
                     isAdvancedSearch={isAdvancedSearch}
                     setIsAdvancedSearch={setIsAdvancedSearch}
                     isHiddenAlert={isHiddenAlert.searchForm}
+                    isHiddenSpinner={isHiddenSpinner}
                     alertVariant={alertVariant.searchForm}
                     alertMsg={alertMsg.searchForm}
                 >

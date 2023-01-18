@@ -11,6 +11,7 @@ const PageBasedForm = ({
     handleReset,
     btnSubmitText,
     isHiddenAlert,
+    isHiddenSpinner,
     alertVariant,
     alertMsg,
     isSearchForm,
@@ -30,6 +31,7 @@ const PageBasedForm = ({
                 <PageBasedFormFooter
                     btnSubmitText={btnSubmitText}
                     isHiddenAlert={isHiddenAlert}
+                    isHiddenSpinner={isHiddenSpinner}
                     handleReset={handleReset}
                     alertVariant={alertVariant}
                     alertMsg={alertMsg}

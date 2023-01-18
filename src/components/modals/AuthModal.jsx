@@ -6,6 +6,7 @@ import {
     Button,
     Form,
     Modal,
+    Spinner,
     Toast,
     ToastContainer,
 } from "react-bootstrap";
@@ -32,6 +33,7 @@ const AuthModal = ({ handleAuthModalClose }) => {
 
     const [showSuccessToast, setShowSuccessToast] = useState(false);
     const [textSuccessToast, setTextSuccessToast] = useState("");
+    const [isHiddenSpinner, setIsHiddenSpinner] = useState(true);
 
     const areAllAlertsHidden =
         isHiddenAlert.signupSuccess &&
@@ -46,6 +48,11 @@ const AuthModal = ({ handleAuthModalClose }) => {
     };
 
     const handleSignup = async () => {
+        setIsHiddenSpinner(false);
+        setIsHiddenAlert({
+            ...isHiddenAlert,
+            authError: { ...isHiddenAlert.authError, signup: true },
+        });
         try {
             const {
                 firstName,
@@ -84,19 +91,22 @@ const AuthModal = ({ handleAuthModalClose }) => {
                 ...isHiddenAlert,
                 authError: { ...isHiddenAlert.authError, signup: false },
             });
+        } finally {
+            setIsHiddenSpinner(true);
         }
     };
 
     const handleLogin = async () => {
+        setIsHiddenSpinner(false);
+        setIsHiddenAlert({
+            ...isHiddenAlert,
+            authError: { ...isHiddenAlert.authError, login: true },
+        });
         try {
             const res = await instance.post(
                 "https://thepethaven-be.azurewebsites.net/login",
                 loginFormData
             );
-            setIsHiddenAlert({
-                ...isHiddenAlert,
-                authError: { ...isHiddenAlert.authError, login: true },
-            });
             setCurrentUser({ ...res.data.user });
             setIsLoggedIn(true);
             localStorage.setItem(
@@ -116,6 +126,8 @@ const AuthModal = ({ handleAuthModalClose }) => {
                 authError: { ...isHiddenAlert.authError, login: false },
             });
             console.log(err);
+        } finally {
+            setIsHiddenSpinner(true);
         }
     };
 
@@ -163,20 +175,29 @@ const AuthModal = ({ handleAuthModalClose }) => {
                     <Modal.Footer
                         className={`d-flex justify-content-${
                             areAllAlertsHidden ? "end" : "between"
-                        }`}
+                        } align-items-center`}
                     >
-                        <Alert
-                            id="alert-auth-error"
-                            variant="danger"
-                            className="px-2 py-1"
-                            hidden={
+                        <div id="alert-spinner-container" className="d-flex">
+                            <Spinner
+                                animation="border"
+                                variant="primary"
+                                hidden={isHiddenSpinner}
+                            />
+                            <Alert
+                                id="alert-auth-error"
+                                variant="danger"
+                                className="px-2 py-1"
+                                hidden={
+                                    isSigningUp
+                                        ? isHiddenAlert.authError.signup
+                                        : isHiddenAlert.authError.login
+                                }
+                            >{`Sorry, there was a problem ${
                                 isSigningUp
-                                    ? isHiddenAlert.authError.signup
-                                    : isHiddenAlert.authError.login
-                            }
-                        >{`Sorry, there was a problem ${
-                            isSigningUp ? "signing you up" : "logging you in"
-                        }. ${msgAlertAuthError}`}</Alert>
+                                    ? "signing you up"
+                                    : "logging you in"
+                            }. ${msgAlertAuthError}`}</Alert>
+                        </div>
                         <Button type="submit">
                             {isSigningUp ? "Sign Up" : "Login"}
                         </Button>
