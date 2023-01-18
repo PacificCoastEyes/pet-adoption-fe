@@ -11,9 +11,13 @@ export default async function toggleSavePet(
 ) {
     try {
         !isSaved &&
-            (await instance.post(`http://localhost:8080/pet/${id}/save`));
+            (await instance.post(
+                `https://thepethaven-be.azurewebsites.net/pet/${id}/save`
+            ));
         isSaved &&
-            (await instance.delete(`http://localhost:8080/pet/${id}/save`));
+            (await instance.delete(
+                `https://thepethaven-be.azurewebsites.net/pet/${id}/save`
+            ));
         setPetState({
             ...petState,
             [id]: { ...petState[id], isSaved: isSaved ? false : true },

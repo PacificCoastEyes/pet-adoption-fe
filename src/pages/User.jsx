@@ -11,16 +11,17 @@ const User = ({ title }) => {
     const [userPets, setUserPets] = useState([]);
 
     useEffect(() => {
-        /* eslint-enable */
         document.title = title;
         getUserWithPets();
-        /* eslint-disable */
+        // eslint-disable-next-line
     }, []);
 
     const getUserWithPets = async () => {
         const params = new URL(document.location).searchParams;
         const id = params.get("id");
-        const res = await instance.get(`http://localhost:8080/user/${id}/full`);
+        const res = await instance.get(
+            `https://thepethaven-be.azurewebsites.net/user/${id}/full`
+        );
         setUserDetails(res.data.user);
         setUserPets(res.data.pets);
     };

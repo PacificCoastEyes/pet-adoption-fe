@@ -19,9 +19,12 @@ const Profile = ({ title }) => {
         resetAlertPageBasedForm,
     } = useContext(PageBasedFormContext);
 
+    const [isHiddenSpinner, setIsHiddenSpinner] = useState(true);
+
     useEffect(() => {
         document.title = title;
         resetAlertPageBasedForm("profileForm");
+        // eslint-disable-next-line
     }, [title]);
 
     const draftProfileDataSchema = {
@@ -47,7 +50,7 @@ const Profile = ({ title }) => {
         const fetchUserDetails = async () => {
             try {
                 const res = await instance.get(
-                    `http://localhost:8080/user/${currentUser.id}`
+                    `https://thepethaven-be.azurewebsites.net/user/${currentUser.id}`
                 );
                 for (const field in res.data.user) {
                     if (res.data.user[field] === null)
@@ -92,9 +95,11 @@ const Profile = ({ title }) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        setIsHiddenSpinner(false);
+        setIsHiddenAlert({ ...isHiddenAlert, profileForm: true });
         try {
             await instance.put(
-                `http://localhost:8080/user/${currentUser.id}`,
+                `https://thepethaven-be.azurewebsites.net/user/${currentUser.id}`,
                 draftProfileData
             );
             alertSuccess();
@@ -106,6 +111,8 @@ const Profile = ({ title }) => {
                 ...alertMsg,
                 profileForm: `There was a problem updating your profile. ${err.response.data}`,
             });
+        } finally {
+            setIsHiddenSpinner(true);
         }
     };
 
@@ -117,6 +124,7 @@ const Profile = ({ title }) => {
                 headerTitle="My Profile"
                 btnSubmitText="Save"
                 isHiddenAlert={isHiddenAlert.profileForm}
+                isHiddenSpinner={isHiddenSpinner}
                 alertVariant={alertVariant.profileForm}
                 alertMsg={alertMsg.profileForm}
             >

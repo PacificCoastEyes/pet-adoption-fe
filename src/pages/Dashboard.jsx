@@ -17,12 +17,16 @@ const Dashboard = ({ title }) => {
     }, [title]);
 
     const getAllPets = async () => {
-        const res = await instance.get("http://localhost:8080/pet");
+        const res = await instance.get(
+            "https://thepethaven-be.azurewebsites.net/pet"
+        );
         setAllPets(res.data);
     };
 
     const getAllUsers = async () => {
-        const res = await instance.get("http://localhost:8080/user");
+        const res = await instance.get(
+            "https://thepethaven-be.azurewebsites.net/user"
+        );
         setAllUsers(res.data);
     };
 

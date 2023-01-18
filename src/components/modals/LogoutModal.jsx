@@ -12,7 +12,9 @@ const LogoutModal = ({ handleLogoutModalClose }) => {
             setIsLoggedIn(false);
             setCurrentUser({});
             const clearCookie = async () => {
-                return await instance.get("http://localhost:8080/logout");
+                return await instance.get(
+                    "https://thepethaven-be.azurewebsites.net/logout"
+                );
             };
             clearCookie();
             localStorage.removeItem("currentUser");

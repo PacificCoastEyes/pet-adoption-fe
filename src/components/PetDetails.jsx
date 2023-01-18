@@ -81,12 +81,12 @@ const PetDetails = ({ setShowPetActionToast, setTextPetActionToast }) => {
             let success;
             if (action === "foster" || action === "adopt") {
                 success = await instance.post(
-                    `http://localhost:8080/pet/${id}/adopt`,
+                    `https://thepethaven-be.azurewebsites.net/pet/${id}/adopt`,
                     { action: action }
                 );
             } else {
                 success = await instance.post(
-                    `http://localhost:8080/pet/${id}/return`
+                    `https://thepethaven-be.azurewebsites.net/pet/${id}/return`
                 );
             }
             if (!success) throw new Error();
