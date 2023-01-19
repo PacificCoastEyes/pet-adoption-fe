@@ -10,8 +10,8 @@ const PetActionToast = ({
             <Toast
                 show={showPetActionToast}
                 onClose={() => setShowPetActionToast(false)}
-                // delay={6000}
-                // autohide
+                delay={6000}
+                autohide
             >
                 <Toast.Header>
                     <strong className="me-auto">The Pet Haven</strong>
